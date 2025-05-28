@@ -26,8 +26,14 @@ class PermissionResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->label('Nama Permission')
                     ->required()
                     ->maxLength(255),
+
+                TextInput::make('guard_name')
+                    ->label('Guard')
+                    ->default('web')
+                    ->disabled(),
 
             ]);
     }
@@ -36,15 +42,24 @@ class PermissionResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->state(function ($record, $livewire, $rowLoop) {
+                        return $rowLoop->iteration;
+                    }),
+
                 TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
+
+                TextColumn::make('guard_name')
+                    ->label('Guard'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -65,7 +80,7 @@ class PermissionResource extends Resource
         return [
             'index' => Pages\ListPermissions::route('/'),
             'create' => Pages\CreatePermission::route('/create'),
-            'edit' => Pages\EditPermission::route('/{record}/edit'),
+            // 'edit' => Pages\EditPermission::route('/{record}/edit'),
         ];
     }
 

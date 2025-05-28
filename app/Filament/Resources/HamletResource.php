@@ -36,6 +36,12 @@ class HamletResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('no')
+                ->label('No')
+                ->state(function ($record, $livewire, $rowLoop) {
+                    return $rowLoop->iteration;
+                }),
+
                 TextColumn::make('name')
                 ->label('Nama Dusun')
                 ->sortable()
@@ -46,6 +52,7 @@ class HamletResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
