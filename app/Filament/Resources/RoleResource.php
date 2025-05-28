@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\RoleResource\Pages;
 use App\Filament\Resources\RoleResource\RelationManagers;
 use Filament\Forms;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -28,6 +29,15 @@ class RoleResource extends Resource
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                TextInput::make('guard_name')
+                    ->default('web')
+                    ->disabled()
+                    ->required(),
+                CheckboxList::make('permissions')
+                    ->label('Permissions')
+                    ->relationship('permissions', 'name')
+                    ->columns(2)
+                    ->required(),
             ]);
     }
 
@@ -35,13 +45,20 @@ class RoleResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->sortable()->searchable(),
+                TextColumn::make('no')
+                ->label('No')
+                ->state(function ($record, $livewire, $rowLoop) {
+                    return $rowLoop->iteration;
+                }),
+                TextColumn::make('name')->label('Nama Role'),
+                TextColumn::make('guard_name')->label('Guard'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
