@@ -6,10 +6,12 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -33,6 +35,11 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
+                Select::make('roles')
+                ->label('Role')
+                ->relationship('roles', 'name')
+                ->required(),
+
                 TextInput::make('name')
                     ->required(),
 
@@ -42,10 +49,13 @@ class UserResource extends Resource
                     ->autocomplete('off'),
 
                 TextInput::make('password')
-                    ->password()
-                    ->required()
-                    ->autocomplete('new-password')
-                    ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                ->label('Password')
+                ->password()
+                ->autocomplete('new-password')
+                ->dehydrateStateUsing(fn($state) => filled($state) ? Hash::make($state) : null)
+                ->required(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
+                ->dehydrated(fn($state) => filled($state)) // hanya simpan jika diisi
+                ->default(null),
                 
             ]);
     }
@@ -56,12 +66,14 @@ class UserResource extends Resource
             ->columns([
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('email')->searchable(),
+                BadgeColumn::make('roles.name')->label('Role'),
                 TextColumn::make('created_at')->dateTime(),
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make()->icon('heroicon-o-eye')->tooltip('Detail'),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
 
@@ -86,6 +98,7 @@ class UserResource extends Resource
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
+            'view' => Pages\ViewUser::route('/{record}'),
         ];
     }
 }
