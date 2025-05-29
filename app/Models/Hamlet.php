@@ -12,4 +12,14 @@ class Hamlet extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function rws()
+    {
+        return $this->hasMany(RW::class);
+    }
+
+    public function rts()
+    {
+        return $this->hasMany(RT::class);
+    }
 }
