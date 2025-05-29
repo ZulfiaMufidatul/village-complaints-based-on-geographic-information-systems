@@ -38,6 +38,24 @@ class PermissionSeeder extends Seeder
             'create-hamlets',
             'edit-hamlets',
             'delete-hamlets',
+
+            // kelola rw
+            'view-rw',
+            'create-rw',
+            'edit-rw',
+            'delete-rw',
+
+            // kelola rt
+            'view-rt',
+            'create-rt',
+            'edit-rt',
+            'delete-rt',
+
+            // kelola kategori
+            'view-category',
+            'create-category',
+            'edit-category',
+            'delete-category',
         ];
 
         foreach ($permissions as $permission) {
