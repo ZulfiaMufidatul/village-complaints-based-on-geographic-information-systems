@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateHamlet extends CreateRecord
 {
     protected static string $resource = HamletResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }
