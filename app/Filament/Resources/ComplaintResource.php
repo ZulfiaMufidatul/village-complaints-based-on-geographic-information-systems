@@ -1,0 +1,163 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Filament\Resources\ComplaintResource\Pages;
+use App\Filament\Resources\ComplaintResource\RelationManagers;
+use App\Models\Complaint;
+use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
+
+class ComplaintResource extends Resource
+{
+    protected static ?string $model = Complaint::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Aduan';
+    protected static ?string $navigationGroup = 'App';
+
+    public static function canCreate(): bool
+    {
+        // Admin dan superadmin tidak bisa create dari panel
+        return false;
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+
+                Select::make('request_status')
+                    ->label('Status Permintaan')
+                    ->options([
+                        'pending' => 'Pending',
+                        'approved' => 'Disetujui',
+                        'rejected' => 'Ditolak',
+                    ])
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(
+                        fn($state, callable $set) => $state === 'rejected'
+                            ? $set('status_complaint', 'cancel')
+                            : null
+                    ),
+
+                Select::make('status_complaint')
+                    ->label('Status Aduan')
+                    ->options(function (callable $get) {
+                        $requestStatus = $get('request_status');
+
+                        if ($requestStatus === 'approved') {
+                            return [
+                                'pending' => 'Belum Diproses',
+                                'process' => 'Diproses',
+                                'done' => 'Selesai',
+                            ];
+                        }
+
+                        if ($requestStatus === 'rejected') {
+                            return [
+                                'cancel' => 'Dibatalkan',
+                            ];
+                        }
+
+                        return [
+                            'pending' => 'Belum Diproses',
+                            'process' => 'Diproses',
+                            'done' => 'Selesai',
+                            'cancel' => 'Dibatalkan',
+                        ];
+                    })
+                    ->disabled(fn(callable $get) => $get('request_status') === 'rejected')
+                    ->required()
+                    ->reactive(),
+
+                Textarea::make('response')
+                    ->label('Tanggapan')
+                    ->nullable(),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex(isFromZero: false),
+
+                TextColumn::make('hamlet')
+                    ->label('Dusun'),
+
+                TextColumn::make('infrastructure_category')
+                    ->label('Kategori Infrastruktur'),
+
+                TextColumn::make('name')
+                    ->label('Pelapor'),
+
+                TextColumn::make('date_time')
+                    ->label('Waktu Pengaduan')
+                    ->dateTime('d M Y H:i'),
+
+                TextColumn::make('request_status')
+                    ->label('Request Status')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'approved' => 'success',
+                        'rejected' => 'danger',
+                        default => 'gray',
+                    }),
+
+                TextColumn::make('status_complaint')
+                    ->label('Status Aduan')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'done' => 'success',
+                        'process' => 'warning',
+                        'cancel' => 'danger',
+                        default => 'gray',
+                    }),
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('Proses'),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn() => Auth::user()->can('delete-complaints')),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(fn() => Auth::user()->can('delete-complaints')),
+                ]),
+            ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListComplaints::route('/'),
+            'view' => Pages\ViewComplaint::route('/{record}'),
+            'edit' => Pages\EditComplaint::route('/{record}/edit'),
+        ];
+    }
+}
