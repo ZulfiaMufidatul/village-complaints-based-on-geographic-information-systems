@@ -62,11 +62,16 @@ class RolePermissionSeeder extends Seeder
             'create-category',
             'edit-category',
             'delete-category',
+
+            // aduan
+            'view-complaints',
+            'process-complaints',
+            'delete-complaints',
         ];
 
         // Permission untuk admin
         $adminPermissions = [
-            //  Hamlet
+            // Hamlet
             'view-hamlets',
 
             // RW
@@ -80,6 +85,10 @@ class RolePermissionSeeder extends Seeder
             'create-category',
             'edit-category',
             'delete-category',
+
+            // aduan
+            'view-complaints',
+            'process-complaints',
         ];
 
         // permission ke role:superadmin

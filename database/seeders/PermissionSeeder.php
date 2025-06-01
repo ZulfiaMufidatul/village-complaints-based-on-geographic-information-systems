@@ -56,6 +56,12 @@ class PermissionSeeder extends Seeder
             'create-category',
             'edit-category',
             'delete-category',
+
+            // kelola aduan
+            'view-complaints',
+            'process-complaints',
+            'delete-complaints',
+
         ];
 
         foreach ($permissions as $permission) {
