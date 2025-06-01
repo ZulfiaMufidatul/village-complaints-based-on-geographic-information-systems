@@ -23,6 +23,9 @@ class InfrastructureCategoryResource extends Resource
     protected static ?string $model = InfrastructureCategory::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Kategori Infrastruktur';
+    protected static ?string $navigationGroup = 'App';
+
 
     public static function canViewAny(): bool
     {

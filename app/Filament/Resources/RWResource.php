@@ -22,6 +22,8 @@ class RWResource extends Resource
     protected static ?string $model = RW::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Sistem';
+    protected static ?string $navigationLabel = 'RW';
 
     public static function canViewAny(): bool
     {
