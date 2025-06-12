@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\ComplaintExporter;
 use App\Filament\Resources\ComplaintResource\Pages;
 use App\Filament\Resources\ComplaintResource\RelationManagers;
 use App\Models\Complaint;
@@ -11,6 +12,8 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -139,9 +142,13 @@ class ComplaintResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    ExportBulkAction::make()->exporter(ComplaintExporter::class),
                     Tables\Actions\DeleteBulkAction::make()
                         ->visible(fn() => Auth::user()->can('delete-complaints')),
                 ]),
+            ])
+            ->headerActions([
+                ExportAction::make()->exporter(ComplaintExporter::class)
             ]);
     }
 
