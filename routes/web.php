@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ComplaintController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/', [ComplaintController::class, 'index'])->name('index');
+Route::post('/track', [ComplaintController::class, 'track'])->name('complaints.track');
+
+Route::get('/complaints', [ComplaintController::class, 'create'])->name('complaints.create');
+Route::post('/complaints/store', [ComplaintController::class, 'store'])->name('complaints.store');
+
+Route::get('/get-rw/{hamletId}', [ComplaintController::class, 'getRW']);
+Route::get('/get-rt/{hamletId}/{rwId}', [ComplaintController::class, 'getRT']);
