@@ -22,7 +22,8 @@
         @csrf
 
         <label for="complaints_code" class="form-label">Kode Aduan</label>
-        <input type="text" class="form-control" value="{{ $kodeAduan ?? 'Akan muncul setelah dikirim' }}" readonly><br>
+        <input type="text" class="form-control" value="{{ $kodeAduan ?? 'Akan muncul setelah dikirim' }}"
+            readonly><br>
 
         <label>Nama Pelapor</label>
         <input type="text" name="name" value="{{ old('name') }}" required><br>
@@ -66,7 +67,7 @@
         <input type="file" name="photo" accept="image/*" required><br>
 
         <label>Lokasi</label><br>
-        <div id="map" style="height: 300px; width: 100%;"></div><br>
+        <div id="map" style="height: 400px; width: 100%;"></div><br>
 
         <label for="latitude_display">Latitude:</label>
         <input type="text" id="latitude_display" readonly><br>
@@ -82,6 +83,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-pip/leaflet-pip.min.js"></script>
 
     <script>
         // Dropdown dinamis RW
@@ -112,27 +114,85 @@
             });
         });
 
-        // Leaflet map
-        const map = L.map('map').setView([-7.5, 110.5], 13);
+        // Leaflet Map + GeoJSON Boundary
+        const map = L.map('map').setView([-7.667, 110.787], 14);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap'
         }).addTo(map);
 
         let marker;
-        map.on('click', function(e) {
-            const { lat, lng } = e.latlng;
+        let polygonLayer;
 
-            $('#latitude').val(lat);
-            $('#longitude').val(lng);
-            $('#latitude_display').val(lat);
-            $('#longitude_display').val(lng);
+        function setMarker(lat, lng) {
+        $('#latitude').val(lat);
+        $('#longitude').val(lng);
+        $('#latitude_display').val(lat);
+        $('#longitude_display').val(lng);
 
-            if (marker) {
-                marker.setLatLng([lat, lng]);
-            } else {
-                marker = L.marker([lat, lng]).addTo(map);
-            }
+        if (marker) {
+            marker.setLatLng([lat, lng]);
+        } else {
+            marker = L.marker([lat, lng]).addTo(map);
+        }
+    }
+
+    // Load polygon batas wilayah
+    fetch('{{ asset('js/filament/bulakan.geojson') }}')
+        .then(res => res.json())
+        .then(data => {
+            polygonLayer = L.geoJSON(data, {
+                style: {
+                    color: 'blue',
+                    weight: 2,
+                    fillOpacity: 0.05,
+                }
+            }).addTo(map);
+            map.fitBounds(polygonLayer.getBounds());
+
+            // Setelah polygon dimuat, coba GPS
+            tryUseGeolocation();
         });
+
+    // Manual klik
+    map.on('click', function (e) {
+        if (!polygonLayer) return;
+
+        const lat = e.latlng.lat;
+        const lng = e.latlng.lng;
+
+        const inside = leafletPip.pointInLayer([lng, lat], polygonLayer);
+        if (inside.length === 0) {
+            alert("Titik berada di luar wilayah yang diizinkan.");
+            return;
+        }
+
+        setMarker(lat, lng);
+    });
+
+    function tryUseGeolocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    const inside = leafletPip.pointInLayer([lng, lat], polygonLayer);
+                    if (inside.length === 0) {
+                        alert("Lokasi Anda di luar wilayah yang diizinkan. Silakan pilih manual.");
+                        return;
+                    }
+
+                    setMarker(lat, lng);
+                    map.setView([lat, lng], 17);
+                },
+                function (error) {
+                    console.warn("Gagal mendapatkan lokasi GPS: ", error.message);
+                }
+            );
+        } else {
+            alert("Browser Anda tidak mendukung fitur GPS.");
+        }
+    }
     </script>
 </body>
 
