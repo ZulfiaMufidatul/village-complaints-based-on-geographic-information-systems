@@ -16,11 +16,6 @@ class CategoryComplaintChart extends ChartWidget
             ->groupBy('infrastructure_category')
             ->pluck('total', 'infrastructure_category');
 
-        $data = Complaint::select('hamlet')
-            ->selectRaw('COUNT(*) as total')
-            ->groupBy('hamlet')
-            ->pluck('total', 'hamlet');
-
         $colors = [
             '#eaaeeb', // ungu muda
             '#a5e0f2', // biru muda
