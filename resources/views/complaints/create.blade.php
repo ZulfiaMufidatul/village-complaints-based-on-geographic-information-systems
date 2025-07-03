@@ -1,85 +1,120 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Aduan Masyarakat</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 
-<body>
-    <h2>Form Aduan Masyarakat</h2>
+<body class="bg-blue-100 text-gray-800">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <h1 class="text-2xl font-bold mb-6 text-center">Form Aduan Masyarakat</h1>
 
-    @if (session('success'))
-        <div class="alert alert-success">
-            {!! session('success') !!}
-            <br>
-            <strong>Kode Aduan: </strong>{{ session('complaints_code') }}
-        </div>
-    @endif
+        @if (session('success'))
+            <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
+                {!! session('success') !!}
+                <div><strong>Kode Aduan:</strong> {{ session('complaints_code') }}</div>
+            </div>
+        @endif
 
-    <form method="POST" action="{{ route('complaints.store') }}" enctype="multipart/form-data">
-        @csrf
+        <form method="POST" action="{{ route('complaints.store') }}" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow space-y-6">
+            @csrf
 
-        <label for="complaints_code" class="form-label">Kode Aduan</label>
-        <input type="text" class="form-control" value="{{ $kodeAduan ?? 'Akan muncul setelah dikirim' }}"
-            readonly><br>
+            <div>
+                <label class="block font-semibold">Kode Aduan</label>
+                <input type="text" value="{{ $kodeAduan ?? 'Akan muncul setelah dikirim' }}" class="w-full mt-1 rounded border border-gray-300 p-2" readonly>
+            </div>
 
-        <label>Nama Pelapor</label>
-        <input type="text" name="name" value="{{ old('name') }}" required><br>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-semibold">Nama Pelapor</label>
+                    <input type="text" name="name" value="{{ old('name') }}" required class="w-full mt-1 rounded border border-gray-300 p-2">
+                </div>
 
-        <label>No HP</label>
-        <input type="text" name="phone" value="{{ old('phone') }}" required><br>
+                <div>
+                    <label class="block font-semibold">No HP</label>
+                    <input type="text" name="phone" value="{{ old('phone') }}" required class="w-full mt-1 rounded border border-gray-300 p-2">
+                </div>
+            </div>
 
-        <label>Email</label>
-        <input type="email" name="email" value="{{ old('email') }}"><br>
+            <div>
+                <label class="block font-semibold">Email</label>
+                <input type="email" name="email" value="{{ old('email') }}" class="w-full mt-1 rounded border border-gray-300 p-2">
+            </div>
 
-        <label>Dusun</label>
-        <select name="hamlet" id="hamlet" required>
-            <option value="">--Pilih Dusun--</option>
-            @foreach ($hamlets as $hamlet)
-                <option value="{{ $hamlet->name }}" data-id="{{ $hamlet->id }}">{{ $hamlet->name }}</option>
-            @endforeach
-        </select><br>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block font-semibold">Dusun</label>
+                    <select name="hamlet" id="hamlet" required class="w-full mt-1 rounded border border-gray-300 p-2">
+                        <option value="">--Pilih Dusun--</option>
+                        @foreach ($hamlets as $hamlet)
+                            <option value="{{ $hamlet->name }}" data-id="{{ $hamlet->id }}">{{ $hamlet->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-        <label>RW</label>
-        <select name="rw" id="rw" required>
-            <option value="">--Pilih RW--</option>
-        </select><br>
+                <div>
+                    <label class="block font-semibold">RW</label>
+                    <select name="rw" id="rw" required class="w-full mt-1 rounded border border-gray-300 p-2">
+                        <option value="">--Pilih RW--</option>
+                    </select>
+                </div>
 
-        <label>RT</label>
-        <select name="rt" id="rt" required>
-            <option value="">--Pilih RT--</option>
-        </select><br>
+                <div>
+                    <label class="block font-semibold">RT</label>
+                    <select name="rt" id="rt" required class="w-full mt-1 rounded border border-gray-300 p-2">
+                        <option value="">--Pilih RT--</option>
+                    </select>
+                </div>
+            </div>
 
-        <label>Kategori Infrastruktur</label>
-        <select name="infrastructure_category" required>
-            <option value="">--Pilih Kategori--</option>
-            @foreach ($categories as $category)
-                <option value="{{ $category->name }}">{{ $category->name }}</option>
-            @endforeach
-        </select><br>
+            <div>
+                <label class="block font-semibold">Kategori Infrastruktur</label>
+                <select name="infrastructure_category" required class="w-full mt-1 rounded border border-gray-300 p-2">
+                    <option value="">--Pilih Kategori--</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->name }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
 
-        <label>Deskripsi</label>
-        <textarea name="description" required>{{ old('description') }}</textarea><br>
+            <div>
+                <label class="block font-semibold">Deskripsi</label>
+                <textarea name="description" required class="w-full mt-1 rounded border border-gray-300 p-2">{{ old('description') }}</textarea>
+            </div>
 
-        <label>Upload Foto</label>
-        <input type="file" name="photo" accept="image/*" required><br>
+            <div>
+                <label class="block font-semibold">Upload Foto</label>
+                <input type="file" name="photo" accept="image/*" required class="mt-1 border border-gray-300 p-2">
+            </div>
 
-        <label>Lokasi</label><br>
-        <div id="map" style="height: 400px; width: 100%;"></div><br>
+            <div>
+                <label class="block font-semibold mb-1">Lokasi</label>
+                <div id="map" class="h-64 w-full rounded border"></div>
+            </div>
 
-        <label for="latitude_display">Latitude:</label>
-        <input type="text" id="latitude_display" readonly><br>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div>
+                    <label>Latitude</label>
+                    <input type="text" id="latitude_display" readonly class="w-full rounded border border-gray-300 p-2">
+                </div>
+                <div>
+                    <label>Longitude</label>
+                    <input type="text" id="longitude_display" readonly class="w-full rounded border border-gray-300 p-2">
+                </div>
+            </div>
 
-        <label for="longitude_display">Longitude:</label>
-        <input type="text" id="longitude_display" readonly><br>
+            <input type="hidden" name="latitude" id="latitude">
+            <input type="hidden" name="longitude" id="longitude">
 
-        <input type="hidden" name="latitude" id="latitude">
-        <input type="hidden" name="longitude" id="longitude">
-
-        <button type="submit">Kirim Aduan</button>
-    </form>
+            <div class="text-end">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Kirim Aduan</button>
+            </div>
+        </form>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
