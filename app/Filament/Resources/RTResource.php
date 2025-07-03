@@ -23,9 +23,10 @@ class RTResource extends Resource
     protected static ?string $model = RT::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Sistem';
+    protected static ?string $navigationGroup = 'Sistem - Geografis';
     protected static ?string $navigationLabel = 'RT';
-
+    protected static ?string $pluralLabel = 'Data RT';
+    
     // hak akses
     public static function canViewAny(): bool
     {

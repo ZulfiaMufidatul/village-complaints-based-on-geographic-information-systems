@@ -25,6 +25,7 @@ class InfrastructureCategoryResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Kategori Infrastruktur';
     protected static ?string $navigationGroup = 'App';
+    protected static ?string $pluralLabel = 'Data Kategori Infrastruktur';
 
 
     public static function canViewAny(): bool
