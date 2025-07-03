@@ -7,6 +7,7 @@ use Filament\Resources\Pages\ViewRecord;
 use Filament\Infolists;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
 use Filament\Infolists\Infolist;
 
 class ViewComplaint extends ViewRecord
@@ -24,6 +25,15 @@ class ViewComplaint extends ViewRecord
                     ->width(300)
                     ->height(200)
                     ->hidden(fn($record) => !$record->photo),
+                    
+                ViewEntry::make('map')
+                    ->label('Lokasi Aduan')
+                    ->view('components.partials.complaint-map')
+                    ->viewData(fn($record) => [
+                        'latitude' => $record->latitude,
+                        'longitude' => $record->longitude,
+                    ])
+                    ->hidden(fn($record) => !$record->latitude || !$record->longitude),
 
                 TextEntry::make('name')->label('Nama Pelapor'),
                 TextEntry::make('phone')->label('No HP'),
@@ -50,7 +60,11 @@ class ViewComplaint extends ViewRecord
                         default => 'gray',
                     }),
                 TextEntry::make('description')->label('Deskripsi'),
+                TextEntry::make('longitude')->label('longitude'),
+                TextEntry::make('latitude')->label('latitude'),
                 TextEntry::make('date_time')->label('Waktu Aduan')->dateTime('d M Y H:i'),
+                
+
             ]);
     }
 }
