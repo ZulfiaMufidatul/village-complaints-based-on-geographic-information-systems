@@ -73,13 +73,14 @@ class ComplaintController extends Controller
         $last = Complaint::latest('id')->first();
         $number = $last ? intval(substr($last->complaints_code, -4)) + 1 : 1;
         $data['complaints_code'] = 'ADUAN-' . str_pad($number, 4, '0', STR_PAD_LEFT);
+
         $data['photo'] = $request->file('photo')->store('complaints', 'public');
         $data['date_time'] = now();
         // Simpan ke database
         Complaint::create($data);
 
-        return redirect()->back()->with([
-            'success' => 'Aduan berhasil dikirim! Simpan kode ini untuk melacak aduan Anda.',
+        return redirect('/')->with([
+            'success' => 'Aduan berhasil dikirim!',
             'complaints_code' => $data['complaints_code']
         ]);
     }
@@ -91,11 +92,25 @@ class ComplaintController extends Controller
         ]);
 
         $complaint = Complaint::where('complaints_code', $request->complaints_code)->first();
+        $searchedCode = $request->complaints_code;
 
+        $pending = Complaint::where('status_complaint', 'pending')->count();
         $processed = Complaint::where('status_complaint', 'process')->count();
         $finished = Complaint::where('status_complaint', 'done')->count();
 
-        return view('complaints.index', compact('complaint', 'processed', 'finished'))
-            ->with('searchedCode', $request->complaints_code);
+        $total = $pending + $processed + $finished;
+
+        // Hitung persentase aman (hindari pembagian nol)
+        $processedPercentage = $total > 0 ? round(($processed / $total) * 100, 1) : 0;
+        $finishedPercentage = $total > 0 ? round(($finished / $total) * 100, 1) : 0;
+        $pendingPercentage = $total > 0 ? round(($pending / $total) * 100, 1) : 0;
+
+        return view('complaints.index', compact(
+            'complaint',
+            'searchedCode',
+            'processedPercentage',
+            'finishedPercentage',
+            'pendingPercentage'
+        ));
     }
 }
