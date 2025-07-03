@@ -15,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -27,6 +28,7 @@ class ComplaintResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Aduan';
     protected static ?string $navigationGroup = 'App';
+    protected static ?string $pluralLabel = 'Data Aduan';
 
     public static function canCreate(): bool
     {
@@ -131,7 +133,36 @@ class ComplaintResource extends Resource
                     }),
             ])
             ->filters([
-                //
+                SelectFilter::make('status_complaint')
+                    ->label('Status Aduan')
+                    ->options([
+                        'pending' => 'Belum Diproses',
+                        'process' => 'Diproses',
+                        'done' => 'Selesai',
+                        'cancel' => 'Dibatalkan',
+                    ]),
+
+                SelectFilter::make('hamlet')
+                    ->label('Dusun')
+                    ->options(function () {
+                        return Complaint::query()
+                            ->select('hamlet')
+                            ->distinct()
+                            ->orderBy('hamlet')
+                            ->pluck('hamlet', 'hamlet')
+                            ->toArray();
+                    }),
+
+                SelectFilter::make('infrastructure_category')
+                    ->label('Kategori Infrastruktur')
+                    ->options(function () {
+                        return Complaint::query()
+                            ->select('infrastructure_category')
+                            ->distinct()
+                            ->orderBy('infrastructure_category')
+                            ->pluck('infrastructure_category', 'infrastructure_category')
+                            ->toArray();
+                    }),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
