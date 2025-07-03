@@ -9,7 +9,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateRW extends CreateRecord
 {
     protected static string $resource = RWResource::class;
-
+    protected static ?string $title = 'Tambah RW';
+    
     // redirect ke index
     protected function getRedirectUrl(): string
     {

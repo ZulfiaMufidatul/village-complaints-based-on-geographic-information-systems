@@ -9,6 +9,7 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateHamlet extends CreateRecord
 {
     protected static string $resource = HamletResource::class;
+    protected static ?string $title = 'Tambah Dusun';
 
     protected function getRedirectUrl(): string
     {

@@ -9,7 +9,7 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateInfrastructureCategory extends CreateRecord
 {
     protected static string $resource = InfrastructureCategoryResource::class;
-
+    protected static ?string $title = 'Tambah Kategori Infrastruktur';
     // redirect ke index
     protected function getRedirectUrl(): string
     {
