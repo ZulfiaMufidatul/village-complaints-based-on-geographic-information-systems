@@ -4,7 +4,6 @@
 </div>
 
 @push('styles')
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         /* Tambahan untuk mencegah peta tumpang tindih saat scroll */
         #map {
@@ -29,82 +28,84 @@
 @endpush
 
 @push('scripts')
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const map = L.map('map');
+        document.addEventListener("DOMContentLoaded", function() {
+            const map = L.map('map');
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
 
-        const markers = [];
-        const complaints = @json($this->complaints);
+            const markers = [];
+            const complaints = @json($this->complaints);
 
-        // Peta warna per kategori
-        const categoryColors = {
-            'Jalan': 'red',
-            'Drainase': 'blue',
-            'Jembatan': 'green',
-            'Gorong-Gorong': 'yellow',
-        };
+            // Peta warna per kategori
+            const categoryColors = {
+                'Jalan': 'red',
+                'Drainase': 'blue',
+                'Jembatan': 'green',
+                'Gorong-Gorong': 'yellow',
+            };
 
-        // Tambahkan marker untuk setiap aduan
-        complaints.forEach(c => {
-            if (c.latitude && c.longitude) {
-                const color = categoryColors[c.category] ?? 'purple'; // fallback jika tidak terdaftar
+            // Tambahkan marker untuk setiap aduan
+            complaints.forEach(c => {
+                if (c.latitude && c.longitude) {
+                    const color = categoryColors[c.category] ?? 'purple'; // fallback jika tidak terdaftar
 
-                const icon = L.icon({
-                    iconUrl: `https://maps.google.com/mapfiles/ms/icons/${color}-dot.png`,
-                    iconSize: [32, 32],
-                    iconAnchor: [16, 32],
-                    popupAnchor: [0, -30]
-                });
+                    const icon = L.icon({
+                        iconUrl: `https://maps.google.com/mapfiles/ms/icons/${color}-dot.png`,
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 32],
+                        popupAnchor: [0, -30]
+                    });
 
-                const marker = L.marker([c.latitude, c.longitude], { icon }).addTo(map);
+                    const marker = L.marker([c.latitude, c.longitude], {
+                        icon
+                    }).addTo(map);
 
-                marker.bindPopup(`
-                    <strong>${c.name}</strong><br>
-                    <small>Kategori: ${c.category}</small>
-                `);
+                    marker.bindPopup(`
+                        <strong>${c.name}</strong><br>
+                        <small>Kategori: ${c.category}</small>
+                    `);
 
-                markers.push(marker.getLatLng());
-            }
-        });
-
-        // Tampilkan batas wilayah dari GeoJSON
-        fetch('{{ asset('js/filament/bulakan.geojson') }}')
-            .then(res => res.json())
-            .then(data => {
-                const geoLayer = L.geoJSON(data, {
-                    style: {
-                        color: 'blue',
-                        weight: 2,
-                        fillOpacity: 0.1,
-                    }
-                }).addTo(map);
-
-                const polygonBounds = geoLayer.getBounds();
-                const markerBounds = markers.length > 0 ? L.latLngBounds(markers) : null;
-
-                // Gabungkan bounds polygon dan marker (jika ada)
-                if (markerBounds) {
-                    polygonBounds.extend(markerBounds);
-                }
-
-                map.fitBounds(polygonBounds, { padding: [50, 50] });
-            })
-            .catch(() => {
-                // Jika gagal ambil geojson, fallback ke marker atau default center
-                if (markers.length > 0) {
-                    map.fitBounds(L.latLngBounds(markers), { padding: [50, 50] });
-                } else {
-                    map.setView([-7.667, 110.787], 14);
+                    markers.push(marker.getLatLng());
                 }
             });
-    });
-</script>
 
+            // Tampilkan batas wilayah dari GeoJSON
+            fetch('{{ asset('js/filament/bulakan.geojson') }}')
+                .then(res => res.json())
+                .then(data => {
+                    const geoLayer = L.geoJSON(data, {
+                        style: {
+                            color: 'blue',
+                            weight: 2,
+                            fillOpacity: 0.1,
+                        }
+                    }).addTo(map);
+
+                    const polygonBounds = geoLayer.getBounds();
+                    const markerBounds = markers.length > 0 ? L.latLngBounds(markers) : null;
+
+                    // Gabungkan bounds polygon dan marker (jika ada)
+                    if (markerBounds) {
+                        polygonBounds.extend(markerBounds);
+                    }
+
+                    map.fitBounds(polygonBounds, {
+                        padding: [50, 50]
+                    });
+                })
+                .catch(() => {
+                    // Jika gagal ambil geojson, fallback ke marker atau default center
+                    if (markers.length > 0) {
+                        map.fitBounds(L.latLngBounds(markers), {
+                            padding: [50, 50]
+                        });
+                    } else {
+                        map.setView([-7.667, 110.787], 14);
+                    }
+                });
+        });
+    </script>
 @endpush
