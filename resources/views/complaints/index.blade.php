@@ -57,7 +57,7 @@
         <div class="bg-white p-6 rounded-lg shadow-md">
             <p>Sudah pernah melapor?</p>
             <p>Masukkan kode aduan Anda untuk melihat perkembangannya.</p><br>
-            <form action="{{ route('complaints.track') }}" method="POST" class="flex flex-col sm:flex-row gap-3">
+            <form action="{{ route('complaints.track.post') }}" method="POST" class="flex flex-col sm:flex-row gap-3">
                 @csrf
                 <input type="text" name="complaints_code" placeholder="Masukkan Kode Aduan"
                     class="flex-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-400">
