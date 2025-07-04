@@ -7,7 +7,9 @@ use App\Models\Hamlet;
 use App\Models\InfrastructureCategory;
 use App\Models\RT;
 use App\Models\RW;
+use App\Notifications\ComplaintCreatedNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 
 class ComplaintController extends Controller
@@ -77,7 +79,14 @@ class ComplaintController extends Controller
         $data['photo'] = $request->file('photo')->store('complaints', 'public');
         $data['date_time'] = now();
         // Simpan ke database
-        Complaint::create($data);
+        $complaint = Complaint::create($data);
+
+        if ($complaint->email) {
+            Notification::route('mail', $complaint->email)
+                ->notify(new ComplaintCreatedNotification($complaint));
+        }
+
+        // 
 
         return redirect('/')->with([
             'success' => 'Aduan berhasil dikirim!',
@@ -91,8 +100,13 @@ class ComplaintController extends Controller
             'complaints_code' => 'required|string'
         ]);
 
-        $complaint = Complaint::where('complaints_code', $request->complaints_code)->first();
-        $searchedCode = $request->complaints_code;
+        return redirect()->route('complaints.track', ['complaints_code' => $request->complaints_code]);
+    }
+
+    public function trackCode($complaints_code)
+    {
+        $complaint = Complaint::where('complaints_code', $complaints_code)->first();
+        $searchedCode = $complaints_code;
 
         $pending = Complaint::where('status_complaint', 'pending')->count();
         $processed = Complaint::where('status_complaint', 'process')->count();
@@ -100,7 +114,6 @@ class ComplaintController extends Controller
 
         $total = $pending + $processed + $finished;
 
-        // Hitung persentase aman (hindari pembagian nol)
         $processedPercentage = $total > 0 ? round(($processed / $total) * 100, 1) : 0;
         $finishedPercentage = $total > 0 ? round(($finished / $total) * 100, 1) : 0;
         $pendingPercentage = $total > 0 ? round(($pending / $total) * 100, 1) : 0;
