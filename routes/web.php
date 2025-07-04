@@ -19,7 +19,10 @@ Route::get('/', function () {
 });
 
 Route::get('/', [ComplaintController::class, 'index'])->name('index');
-Route::post('/track', [ComplaintController::class, 'track'])->name('complaints.track');
+// POST track (via form pencarian)
+Route::post('/track', [ComplaintController::class, 'track'])->name('complaints.track.post');
+// GET track (via link di email)
+Route::get('/track/{complaints_code}', [ComplaintController::class, 'trackCode'])->name('complaints.track');
 
 Route::get('/complaints', [ComplaintController::class, 'create'])->name('complaints.create');
 Route::post('/complaints/store', [ComplaintController::class, 'store'])->name('complaints.store');
