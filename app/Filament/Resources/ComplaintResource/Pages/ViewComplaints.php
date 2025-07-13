@@ -25,7 +25,7 @@ class ViewComplaint extends ViewRecord
                     ->width(300)
                     ->height(200)
                     ->hidden(fn($record) => !$record->photo),
-                    
+
                 ViewEntry::make('map')
                     ->label('Lokasi Aduan')
                     ->view('components.partials.complaint-map')
@@ -35,13 +35,30 @@ class ViewComplaint extends ViewRecord
                     ])
                     ->hidden(fn($record) => !$record->latitude || !$record->longitude),
 
-                TextEntry::make('name')->label('Nama Pelapor'),
-                TextEntry::make('phone')->label('No HP'),
-                TextEntry::make('email')->label('Email'),
-                TextEntry::make('infrastructure_category')->label('Kategori Infrastruktur'),
-                TextEntry::make('hamlet')->label('Dusun'),
-                TextEntry::make('rw')->label('RW'),
-                TextEntry::make('rt')->label('RT'),
+                TextEntry::make('complaints_code')->label('Kode Aduan')
+                    ->extraAttributes(['class' => 'bg-gray-200 px-3 py-1 rounded-md']),
+                TextEntry::make('name')->label('Nama Pelapor')
+                    ->extraAttributes(['class' => 'bg-gray-200 px-3 py-1 rounded-md']),
+                TextEntry::make('phone')->label('No HP')
+                    ->extraAttributes(['class' => 'bg-gray-200 px-3 py-1 rounded-md']),
+                TextEntry::make('email')->label('Email')
+                    ->extraAttributes(['class' => 'bg-gray-200 px-3 py-1 rounded-md']),
+                TextEntry::make('infrastructure_category')->label('Kategori Infrastruktur')
+                    ->extraAttributes(['class' => 'bg-gray-200 px-3 py-1 rounded-md']),
+                TextEntry::make('hamlet')->label('Dusun')
+                    ->extraAttributes(['class' => 'bg-gray-200 px-3 py-1 rounded-md']),
+                TextEntry::make('rw')->label('RW')
+                    ->extraAttributes(['class' => 'bg-gray-200 px-3 py-1 rounded-md']),
+                TextEntry::make('rt')->label('RT')
+                    ->extraAttributes(['class' => 'bg-gray-200 px-3 py-1 rounded-md']),
+                TextEntry::make('description')->label('Deskripsi')
+                    ->extraAttributes(['class' => 'bg-gray-200 px-3 py-1 rounded-md']),
+                TextEntry::make('date_time')->label('Waktu Aduan')->dateTime('d M Y H:i')
+                    ->extraAttributes(['class' => 'bg-gray-200 px-3 py-1 rounded-md']),
+                TextEntry::make('longitude')->label('longitude')
+                    ->extraAttributes(['class' => 'bg-gray-200 px-3 py-1 rounded-md']),
+                TextEntry::make('latitude')->label('latitude')
+                    ->extraAttributes(['class' => 'bg-gray-200 px-3 py-1 rounded-md']),
                 TextEntry::make('status_complaint')
                     ->label('Status Aduan')
                     ->badge()
@@ -59,12 +76,8 @@ class ViewComplaint extends ViewRecord
                         'rejected' => 'danger',
                         default => 'gray',
                     }),
-                TextEntry::make('description')->label('Deskripsi'),
-                TextEntry::make('longitude')->label('longitude'),
-                TextEntry::make('latitude')->label('latitude'),
-                TextEntry::make('date_time')->label('Waktu Aduan')->dateTime('d M Y H:i'),
-                
-
+                TextEntry::make('response')->label('Komentar Admin')
+                    ->extraAttributes(['class' => 'bg-gray-200 px-3 py-1 rounded-md']),
             ]);
     }
 }
