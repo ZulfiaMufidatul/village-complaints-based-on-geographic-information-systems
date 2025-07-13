@@ -1,6 +1,6 @@
 <div class="rounded-xl shadow border p-4">
     <h2 class="text-xl font-bold mb-2">Peta Aduan Infrastruktur</h2>
-    <div id="map" style="height: 500px;"></div>
+    <div id="map" style="height: 600px;"></div>
 </div>
 
 @push('styles')
