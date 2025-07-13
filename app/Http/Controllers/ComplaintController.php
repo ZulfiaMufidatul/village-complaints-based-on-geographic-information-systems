@@ -11,9 +11,20 @@ use App\Notifications\ComplaintCreatedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
+use Twilio\Rest\Client;
 
 class ComplaintController extends Controller
 {
+    public $twilio_id;
+    public $twilio_token;
+    public $twilio_from_number;
+
+    public function __construct()
+    {
+        $this->twilio_id=config('services.twilio.sid');
+        $this->twilio_token=config('services.twilio.token');
+        $this->twilio_from_number=config('services.twilio.whatsapp_from');
+    }
     public function index()
     {
         $pending = Complaint::where('status_complaint', 'pending')->count();
@@ -86,7 +97,16 @@ class ComplaintController extends Controller
                 ->notify(new ComplaintCreatedNotification($complaint));
         }
 
-        // 
+        // twilio
+        $client=new Client(
+            $this->twilio_id,
+            $this->twilio_token,
+        );
+
+        $client->messages->create('whatsapp:+62895422622021', [
+            'from'=>'whatsapp:'. $this->twilio_from_number,
+            'body'=>'Terima kasih',
+        ]);
 
         return redirect('/')->with([
             'success' => 'Aduan berhasil dikirim!',
