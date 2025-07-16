@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -44,5 +45,20 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        if ($e instanceof ThrottleRequestsException) {
+            if ($request->expectsJson()) {
+                dd('oakwoawwa');
+            }
+
+            return redirect()->route('complaints.create')
+                ->withErrors(['too_many_requests' => 'Terlalu banyak permintaan. Silakan coba lagi setelah beberapa saat.'])
+                ->withInput();
+
+            // return dd('test no json');
+        }
     }
 }

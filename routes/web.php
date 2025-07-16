@@ -23,9 +23,10 @@ Route::get('/', [ComplaintController::class, 'index'])->name('index');
 Route::post('/track', [ComplaintController::class, 'track'])->name('complaints.track.post');
 // GET track (via link di email)
 Route::get('/track/{complaints_code}', [ComplaintController::class, 'trackCode'])->name('complaints.track');
+Route::get('/track/{complaints_code}/detail', [ComplaintController::class, 'showDetail'])->name('complaints.detail');
 
 Route::get('/complaints', [ComplaintController::class, 'create'])->name('complaints.create');
-Route::post('/complaints/store', [ComplaintController::class, 'store'])->name('complaints.store');
+Route::post('/complaints/store', [ComplaintController::class, 'store'])->name('complaints.store')->middleware("throttle:complaints");
 
 Route::get('/get-rw/{hamletId}', [ComplaintController::class, 'getRW']);
 Route::get('/get-rt/{hamletId}/{rwId}', [ComplaintController::class, 'getRT']);
