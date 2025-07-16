@@ -6,6 +6,7 @@ use App\Filament\Exports\ComplaintExporter;
 use App\Filament\Resources\ComplaintResource\Pages;
 use App\Filament\Resources\ComplaintResource\RelationManagers;
 use App\Models\Complaint;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -20,6 +21,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class ComplaintResource extends Resource
 {
@@ -133,6 +135,9 @@ class ComplaintResource extends Resource
                     }),
             ])
             ->filters([
+                DateRangeFilter::make('created_at')
+                    ->label('Tanggal')
+                    ->placeholder("Pilih Rentang Tanggal"),
                 SelectFilter::make('status_complaint')
                     ->label('Status Aduan')
                     ->options([
@@ -152,7 +157,6 @@ class ComplaintResource extends Resource
                             ->pluck('hamlet', 'hamlet')
                             ->toArray();
                     }),
-
                 SelectFilter::make('infrastructure_category')
                     ->label('Kategori Infrastruktur')
                     ->options(function () {
