@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body class="bg-blue-100 text-gray-800">
@@ -20,52 +24,61 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('complaints.store') }}" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow space-y-6">
+        <form method="POST" action="{{ route('complaints.store') }}" enctype="multipart/form-data"
+            class="bg-white p-6 rounded-lg shadow space-y-6">
             @csrf
 
             <div>
                 <label class="block font-semibold">Kode Aduan</label>
-                <input type="text" value="{{ $kodeAduan ?? 'Akan muncul setelah dikirim' }}" class="w-full mt-1 rounded border border-gray-300 p-2" readonly>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block font-semibold">Nama Pelapor</label>
-                    <input type="text" name="name" value="{{ old('name') }}" required class="w-full mt-1 rounded border border-gray-300 p-2">
-                </div>
-
-                <div>
-                    <label class="block font-semibold">No HP</label>
-                    <input type="text" name="phone" value="{{ old('phone') }}" required class="w-full mt-1 rounded border border-gray-300 p-2">
-                </div>
+                <input type="text" value="{{ $kodeAduan ?? 'Akan muncul setelah dikirim' }}"
+                    class="w-full mt-1 rounded border border-gray-300 p-2" readonly>
             </div>
 
             <div>
-                <label class="block font-semibold">Email</label>
-                <input type="email" name="email" value="{{ old('email') }}" class="w-full mt-1 rounded border border-gray-300 p-2">
+                <label class="block font-semibold">Nama Pelapor</label>
+                <input type="text" name="name" value="{{ old('name') }}" required
+                    class="w-full mt-1 rounded border border-gray-300 p-2">
             </div>
+            <div class="grid md:grid-cols-2 gap-4">
+
+                <div>
+                    <label class="block font-semibold">No HP</label>
+                    <input type="text" name="phone" value="{{ old('phone') }}" required
+                        class="w-full mt-1 rounded border border-gray-300 p-2">
+                </div>
+                <div>
+                    <label class="block font-semibold">Email</label>
+                    <input type="email" name="email" value="{{ old('email') }}"
+                        class="w-full mt-1 rounded border border-gray-300 p-2">
+                </div>
+            </div>
+
 
             <div class="grid md:grid-cols-3 gap-4">
                 <div>
                     <label class="block font-semibold">Dusun</label>
-                    <select name="hamlet" id="hamlet" required class="w-full mt-1 rounded border border-gray-300 p-2">
+                    <select name="hamlet" id="hamlet" required
+                        class="w-full mt-1 rounded border border-gray-300 p-2">
                         <option value="">--Pilih Dusun--</option>
                         @foreach ($hamlets as $hamlet)
-                            <option value="{{ $hamlet->name }}" data-id="{{ $hamlet->id }}">{{ $hamlet->name }}</option>
+                            <option value="{{ $hamlet->name }}" data-id="{{ $hamlet->id }}">{{ $hamlet->name }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
 
                 <div>
                     <label class="block font-semibold">RW</label>
-                    <select name="rw" id="rw" required class="w-full mt-1 rounded border border-gray-300 p-2">
+                    <select name="rw" id="rw" required
+                        class="w-full mt-1 rounded border border-gray-300 p-2">
                         <option value="">--Pilih RW--</option>
                     </select>
                 </div>
 
                 <div>
                     <label class="block font-semibold">RT</label>
-                    <select name="rt" id="rt" required class="w-full mt-1 rounded border border-gray-300 p-2">
+                    <select name="rt" id="rt" required
+                        class="w-full mt-1 rounded border border-gray-300 p-2">
                         <option value="">--Pilih RT--</option>
                     </select>
                 </div>
@@ -87,23 +100,64 @@
             </div>
 
             <div>
-                <label class="block font-semibold">Upload Foto</label>
-                <input type="file" name="photo" accept="image/*" required class="mt-1 border border-gray-300 p-2">
+                <div class="space-y-4">
+                    <!-- Tombol -->
+                    <div class="flex gap-4">
+                        <!-- Tombol Kamera -->
+                        <label for="cameraInput"
+                            class="cursor-pointer px-4 py-2 text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-400 transition">
+                            <i class="fas fa-camera"></i>
+                            Ambil Foto
+                        </label>
+                        <input type="file" id="cameraInput" name="photo" accept="image/*" capture="environment"
+                            class="hidden" onchange="previewImage(this)">
+
+                        <!-- Tombol Galeri -->
+                        <label for="galleryInput"
+                            class="cursor-pointer px-4 py-2 text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-400 transition">
+                            <i class="fas fa-images"></i>
+                            Pilih Dari Perangkat
+                        </label>
+                        <input type="file" id="galleryInput" name="photo" accept="image/*" class="hidden"
+                            onchange="previewImage(this)">
+                    </div>
+
+                    <!-- Preview -->
+                    <div id="imagePreviewContainer" class="mt-4 hidden">
+                        <p class="mb-2 text-gray-600 text-sm">Preview Gambar:</p>
+                        <img id="imagePreview" src="" alt="Preview Foto"
+                            class="w-52 h-52 object-cover rounded-lg shadow-md border cursor-pointer">
+                    </div>
+                </div>
             </div>
 
             <div>
-                <label class="block font-semibold mb-1">Lokasi</label>
+                <div class="w-full justify-between flex items-center mb-4 ">
+                    <label class="block font-semibold mb-1">Lokasi</label>
+                    <button type="button" id="useNow"
+                        class="rounded border border-gray-300 px-2 py-[1px] bg-blue-500 text-white text-sm text-white flex items-center gap-1">
+                        <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M11 16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16H11ZM8.21567 14.3922C8.75496 14.2731 9.09558 13.7394 8.97647 13.2001C8.85735 12.6608 8.32362 12.3202 7.78433 12.4393L8.21567 14.3922ZM16.2157 12.4393C15.6764 12.3202 15.1426 12.6608 15.0235 13.2001C14.9044 13.7394 15.245 14.2731 15.7843 14.3922L16.2157 12.4393ZM15 7C15 8.65685 13.6569 10 12 10V12C14.7614 12 17 9.76142 17 7H15ZM12 10C10.3431 10 9 8.65685 9 7H7C7 9.76142 9.23858 12 12 12V10ZM9 7C9 5.34315 10.3431 4 12 4V2C9.23858 2 7 4.23858 7 7H9ZM12 4C13.6569 4 15 5.34315 15 7H17C17 4.23858 14.7614 2 12 2V4ZM11 11V16H13V11H11ZM20 17C20 17.2269 19.9007 17.5183 19.5683 17.8676C19.2311 18.222 18.6958 18.5866 17.9578 18.9146C16.4844 19.5694 14.3789 20 12 20V22C14.5917 22 16.9861 21.5351 18.7701 20.7422C19.6608 20.3463 20.4435 19.8491 21.0171 19.2463C21.5956 18.6385 22 17.8777 22 17H20ZM12 20C9.62114 20 7.51558 19.5694 6.04218 18.9146C5.30422 18.5866 4.76892 18.222 4.43166 17.8676C4.0993 17.5183 4 17.2269 4 17H2C2 17.8777 2.40438 18.6385 2.98287 19.2463C3.55645 19.8491 4.33918 20.3463 5.2299 20.7422C7.01386 21.5351 9.40829 22 12 22V20ZM4 17C4 16.6824 4.20805 16.2134 4.96356 15.6826C5.70129 15.1644 6.81544 14.7015 8.21567 14.3922L7.78433 12.4393C6.22113 12.7846 4.83528 13.3285 3.81386 14.0461C2.81023 14.7512 2 15.747 2 17H4ZM15.7843 14.3922C17.1846 14.7015 18.2987 15.1644 19.0364 15.6826C19.792 16.2134 20 16.6824 20 17H22C22 15.747 21.1898 14.7512 20.1861 14.0461C19.1647 13.3285 17.7789 12.7846 16.2157 12.4393L15.7843 14.3922Z"
+                                fill="#FFFF" />
+                        </svg>
+                        <span>Gunakan Lokasi Saya Sekarang</span>
+                    </button>
+                </div>
                 <div id="map" class="h-64 w-full rounded border"></div>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
                     <label>Latitude</label>
-                    <input type="text" id="latitude_display" readonly class="w-full rounded border border-gray-300 p-2">
+                    <input type="text" id="latitude_display" readonly
+                        class="w-full rounded border border-gray-300 p-2">
                 </div>
                 <div>
                     <label>Longitude</label>
-                    <input type="text" id="longitude_display" readonly class="w-full rounded border border-gray-300 p-2">
+                    <input type="text" id="longitude_display" readonly
+                        class="w-full rounded border border-gray-300 p-2">
                 </div>
             </div>
 
@@ -111,7 +165,8 @@
             <input type="hidden" name="longitude" id="longitude">
 
             <div class="text-end">
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Kirim Aduan</button>
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Kirim
+                    Aduan</button>
             </div>
         </form>
     </div>
@@ -119,8 +174,14 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-pip/leaflet-pip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        const useMyLocation = document.getElementById('useNow');
+        useMyLocation.addEventListener('click', () => {
+            tryUseGeolocation();
+        });
+
         // Dropdown dinamis RW
         $('#hamlet').change(function() {
             const hamletId = $(this).find(':selected').data('id');
@@ -158,76 +219,112 @@
         let marker;
         let polygonLayer;
 
-        function setMarker(lat, lng) {
-        $('#latitude').val(lat);
-        $('#longitude').val(lng);
-        $('#latitude_display').val(lat);
-        $('#longitude_display').val(lng);
+        const setMarker = (lat, lng) => {
+            $('#latitude').val(lat);
+            $('#longitude').val(lng);
+            $('#latitude_display').val(lat);
+            $('#longitude_display').val(lng);
 
-        if (marker) {
-            marker.setLatLng([lat, lng]);
-        } else {
-            marker = L.marker([lat, lng]).addTo(map);
+            if (marker) {
+                marker.setLatLng([lat, lng]);
+            } else {
+                marker = L.marker([lat, lng]).addTo(map);
+            }
         }
-    }
 
-    // Load polygon batas wilayah
-    fetch('{{ asset('js/filament/bulakan.geojson') }}')
-        .then(res => res.json())
-        .then(data => {
-            polygonLayer = L.geoJSON(data, {
-                style: {
-                    color: 'blue',
-                    weight: 2,
-                    fillOpacity: 0.05,
-                }
-            }).addTo(map);
-            map.fitBounds(polygonLayer.getBounds());
+        // Load polygon batas wilayah
+        fetch('{{ asset('js/filament/bulakan.geojson') }}')
+            .then(res => res.json())
+            .then(data => {
+                polygonLayer = L.geoJSON(data, {
+                    style: {
+                        color: 'blue',
+                        weight: 2,
+                        fillOpacity: 0.05,
+                    }
+                }).addTo(map);
+                map.fitBounds(polygonLayer.getBounds());
 
-            // Setelah polygon dimuat, coba GPS
-            tryUseGeolocation();
+                // Setelah polygon dimuat, coba GPS
+                // tryUseGeolocation();
+            });
+
+        // Manual klik
+        map.addEventListener('click', function(e) {
+            if (!polygonLayer) return;
+
+            const lat = e.latlng.lat;
+            const lng = e.latlng.lng;
+
+            const inside = leafletPip.pointInLayer([lng, lat], polygonLayer);
+            if (inside.length === 0) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Gagal",
+                    text: "Titik berada di luar wilayah yang diizinkan.",
+                });
+                return;
+            }
+
+            setMarker(lat, lng);
         });
 
-    // Manual klik
-    map.on('click', function (e) {
-        if (!polygonLayer) return;
+        const tryUseGeolocation = () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
 
-        const lat = e.latlng.lat;
-        const lng = e.latlng.lng;
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
 
-        const inside = leafletPip.pointInLayer([lng, lat], polygonLayer);
-        if (inside.length === 0) {
-            alert("Titik berada di luar wilayah yang diizinkan.");
-            return;
-        }
-
-        setMarker(lat, lng);
-    });
-
-    function tryUseGeolocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                function (position) {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-
-                    const inside = leafletPip.pointInLayer([lng, lat], polygonLayer);
-                    if (inside.length === 0) {
-                        alert("Lokasi Anda di luar wilayah yang diizinkan. Silakan pilih manual.");
-                        return;
+                        const inside = leafletPip.pointInLayer([lng, lat], polygonLayer);
+                        if (inside.length === 0) {
+                            // alert("Lokasi Anda di luar wilayah yang diizinkan. Silakan pilih manual.");
+                            // return;
+                            Swal.fire({
+                                icon: "error",
+                                title: "Gagal",
+                                text: "Lokasi Anda di luar wilayah yang diizinkan. Silakan pilih manual.",
+                            });
+                            return;
+                        }
+                        // console.log("📍 Lokasi dari GPS:", lat, lng);
+                        // console.log("✅ Polygon ditemukan:", inside.length);
+                        setMarker(lat, lng);
+                        map.setView([lat, lng], 17);
+                    },
+                    function(error) {
+                        console.warn("Gagal mendapatkan lokasi GPS: ", error.message);
+                        alert("Gagal mendapatkan lokasi GPS: " + error.message);
                     }
-
-                    setMarker(lat, lng);
-                    map.setView([lat, lng], 17);
-                },
-                function (error) {
-                    console.warn("Gagal mendapatkan lokasi GPS: ", error.message);
-                }
-            );
-        } else {
-            alert("Browser Anda tidak mendukung fitur GPS.");
+                );
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Gagal",
+                    text: "Browser Anda tidak mendukung fitur GPS!",
+                });
+                return;
+            }
         }
-    }
+
+        // preview image
+        function previewImage(input) {
+            const file = input.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+
+                const preview = document.getElementById('imagePreview');
+                const container = document.getElementById('imagePreviewContainer');
+
+                preview.src = url;
+                container.classList.remove('hidden');
+
+                preview.onclick = function() {
+                    window.open(url, '_blank');
+                };
+            }
+        }
     </script>
 </body>
 
