@@ -1,5 +1,10 @@
-@vite(['resources/css/app.css', 'resources/js/app.js'])
+@vite(['resources/js/app.js'])
 <x-filament::page>
+    {{-- Tagline ucapan selamat datang --}}
+    <div class="mb-6 text-xl font-semibold text-gray-700">
+        Selamat datang, {{ auth()->user()->name }}! 👋
+    </div>
+
     {{-- Widget Statistik --}}
     <div class="mb-6">
         @livewire(\App\Filament\Widgets\StatsOverview::class)
