@@ -11,17 +11,17 @@
 </head>
 
 @if (session('success') && session('complaints_code'))
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        Swal.fire({
-           icon: 'success',
-            title: 'Berhasil!',
-            html: `Aduan berhasil dikirim!<br>Simpan kode ini untuk melacak aduan Anda.<br><br><strong>Kode Aduan: {{ session('complaints_code') }}</strong>`,
-            confirmButtonText: 'Tutup',
-            confirmButtonColor: '#7C3AED',
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                html: `Aduan berhasil dikirim!<br>Simpan kode ini untuk melacak aduan Anda.<br><br><strong>Kode Aduan: {{ session('complaints_code') }}</strong>`,
+                confirmButtonText: 'Tutup',
+                confirmButtonColor: '#7C3AED',
+            });
         });
-    });
-</script>
+    </script>
 @endif
 
 <body class="bg-blue-100 text-gray-800 font-sans">
@@ -84,7 +84,7 @@
                                 </div>
                             @endif
 
-                            <a href="#"
+                            <a href="{{ route('complaints.detail', $complaint->complaints_code) }}"
                                 class="mt-3 inline-block w-full bg-blue-200 text-blue-500 text-center font-semibold py-1.5 rounded">
                                 Detail
                             </a>
@@ -100,21 +100,24 @@
                             <p class="text-sm">Rw : {{ $complaint->rw }}</p>
 
                             @php
-                                $status = strtolower($complaint->status_complaint);
-                                $statusText = ucfirst($complaint->status_complaint);
-                                $statusStyle = match ($status) {
-                                    'pending' => 'text-yellow-700 bg-yellow-100',
-                                    'cancel' => 'text-red-700 bg-red-100',
-                                    'process' => 'text-blue-700 bg-blue-100',
-                                    'done' => 'text-green-700 bg-green-100',
-                                    default => 'text-gray-700 bg-gray-100',
-                                };
+                                $statusMap = [
+                                    'pending' => ['Menunggu', 'text-yellow-700 bg-yellow-100'],
+                                    'cancel' => ['Dibatalkan', 'text-red-700 bg-red-100'],
+                                    'process' => ['Diproses', 'text-blue-700 bg-blue-100'],
+                                    'done' => ['Selesai', 'text-green-700 bg-green-100'],
+                                ];
+
+                                $statusKey = strtolower($complaint->status_complaint);
+                                $status = $statusMap[$statusKey] ?? [
+                                    'Status Tidak Dikenal',
+                                    'bg-gray-100 text-gray-700',
+                                ];
                             @endphp
 
                             {{-- <span class="mt-4 w-fit inline-block px-4 py-1.5 rounded text-sm {{ $statusStyle }}"> --}}
                             <span
-                                class="mt-3 w-24 inline-block py-1.5 text-center font-semibold rounded {{ $statusStyle }}">
-                                {{ $statusText }}
+                                class="mt-3 w-24 inline-block py-1.5 text-center font-semibold rounded {{ $status[1] }}">
+                                {{ $status[0] }}
                             </span>
                         </div>
                     </div>
