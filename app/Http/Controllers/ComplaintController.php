@@ -21,9 +21,9 @@ class ComplaintController extends Controller
 
     public function __construct()
     {
-        $this->twilio_id=config('services.twilio.sid');
-        $this->twilio_token=config('services.twilio.token');
-        $this->twilio_from_number=config('services.twilio.whatsapp_from');
+        $this->twilio_id = config('services.twilio.sid');
+        $this->twilio_token = config('services.twilio.token');
+        $this->twilio_from_number = config('services.twilio.whatsapp_from');
     }
     public function index()
     {
@@ -98,14 +98,14 @@ class ComplaintController extends Controller
         }
 
         // twilio
-        $client=new Client(
+        $client = new Client(
             $this->twilio_id,
             $this->twilio_token,
         );
 
         $client->messages->create('whatsapp:+62895422622021', [
-            'from'=>'whatsapp:'. $this->twilio_from_number,
-            'body'=>'Terima kasih',
+            'from' => 'whatsapp:' . $this->twilio_from_number,
+            'body' => 'Terima kasih',
         ]);
 
         return redirect('/')->with([
@@ -145,5 +145,12 @@ class ComplaintController extends Controller
             'finishedPercentage',
             'pendingPercentage'
         ));
+    }
+
+    public function showDetail($complaints_code)
+    {
+        $complaint = Complaint::where('complaints_code', $complaints_code)->firstOrFail();
+
+        return view('complaints.detail', compact('complaint'));
     }
 }
