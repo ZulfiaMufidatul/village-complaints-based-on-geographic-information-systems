@@ -46,7 +46,7 @@ class ComplaintResource extends Resource
                 Select::make('request_status')
                     ->label('Status Permintaan')
                     ->options([
-                        'pending' => 'Pending',
+                        'pending' => 'Menunggu',
                         'approved' => 'Disetujui',
                         'rejected' => 'Ditolak',
                     ])
@@ -121,7 +121,14 @@ class ComplaintResource extends Resource
                     ->color(fn(string $state): string => match ($state) {
                         'approved' => 'success',
                         'rejected' => 'danger',
+                        'pending' => 'gray',
                         default => 'gray',
+                    })
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                        'approved' => 'Disetujui',
+                        'rejected' => 'Ditolak',
+                        'pending' => 'Menunggu',
+                        default => ucfirst($state),
                     }),
 
                 TextColumn::make('status_complaint')
@@ -129,9 +136,17 @@ class ComplaintResource extends Resource
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
                         'done' => 'success',
-                        'process' => 'warning',
+                        'process' => 'info',
                         'cancel' => 'danger',
+                        'pending' => 'gray',
                         default => 'gray',
+                    })
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                        'done' => 'Selesai',
+                        'process' => 'Diproses',
+                        'cancel' => 'Dibatalkan',
+                        'pending' => 'Belum Diproses',
+                        default => ucfirst($state),
                     }),
             ])
             ->filters([
@@ -169,11 +184,13 @@ class ComplaintResource extends Resource
                     }),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->label('Detail'),
                 Tables\Actions\EditAction::make()
                     ->label('Proses'),
                 Tables\Actions\DeleteAction::make()
-                    ->visible(fn() => Auth::user()->can('delete-complaints')),
+                    ->visible(fn() => Auth::user()->can('delete-complaints'))
+                    ->label('Hapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -59,6 +59,21 @@ class ViewComplaint extends ViewRecord
                     ->extraAttributes(['class' => 'bg-gray-200 px-3 py-1 rounded-md']),
                 TextEntry::make('latitude')->label('latitude')
                     ->extraAttributes(['class' => 'bg-gray-200 px-3 py-1 rounded-md']),
+                TextEntry::make('request_status')
+                    ->label('Status Permintaan')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'approved' => 'success',
+                        'rejected' => 'danger',
+                        'pending' => 'gray',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                        'approved' => 'Disetujui',
+                        'rejected' => 'Ditolak',
+                        'pending' => 'Menunggu',
+                        default => ucfirst($state),
+                    }),
                 TextEntry::make('status_complaint')
                     ->label('Status Aduan')
                     ->badge()
@@ -66,15 +81,14 @@ class ViewComplaint extends ViewRecord
                         'done' => 'success',
                         'process' => 'info',
                         'cancel' => 'danger',
-                        default => 'warning',
-                    }),
-                TextEntry::make('request_status')
-                    ->label('Status Permintaan')
-                    ->badge()
-                    ->color(fn(string $state): string => match ($state) {
-                        'approved' => 'success',
-                        'rejected' => 'danger',
                         default => 'gray',
+                    })
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                        'done' => 'Selesai',
+                        'process' => 'Diproses',
+                        'cancel' => 'Dibatalkan',
+                        'pending' => 'Belum Diproses',
+                        default => ucfirst($state),
                     }),
                 TextEntry::make('response')->label('Komentar Admin')
                     ->extraAttributes(['class' => 'bg-gray-200 px-3 py-1 rounded-md']),
