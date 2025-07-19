@@ -43,6 +43,15 @@ class CategoryComplaintChart extends ChartWidget
 
     protected function getType(): string
     {
-        return 'bar';
+        return 'doughnut';
+    }
+
+    // agar sejajar dg chart satunya
+    protected function getOptions(): array
+    {
+        return [
+            'maintainAspectRatio' => true,
+            'aspectRatio' => 1.5,
+        ];
     }
 }

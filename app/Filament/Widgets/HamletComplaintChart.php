@@ -38,7 +38,7 @@ class HamletComplaintChart extends ChartWidget
                     'label' => 'Dusun',
                     'data' => $data->values(),
                     'backgroundColor' => $backgroundColors,
-                    
+
                     'borderWidth' => 0,
                 ],
             ],
@@ -49,5 +49,14 @@ class HamletComplaintChart extends ChartWidget
     protected function getType(): string
     {
         return 'bar';
+    }
+
+    // agar sejajar dg chart satunya
+    protected function getOptions(): array
+    {
+        return [
+            'maintainAspectRatio' => true,
+            'aspectRatio' => 1.5,
+        ];
     }
 }
