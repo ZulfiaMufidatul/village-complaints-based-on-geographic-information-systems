@@ -16,7 +16,18 @@
 <body class="bg-blue-100 text-gray-800">
     <div class="max-w-4xl mx-auto px-4 py-8">
         <h1 class="text-2xl font-bold mb-6 text-center">Form Aduan Masyarakat</h1>
-
+        {{-- <div class="alert alert-danger">
+            {{ $errors->first('too_many_requests') }}
+        </div> --}}
+        
+        @if ($errors->has('too_many_requests'))
+            <div id="alert-section" class="w-full bg-red-50 border border-red-400 rounded-lg px-6 py-4 mb-6 flex justify-between items-center">
+                <span class="text-gray-600">{{ $errors->first('too_many_requests') }}</span>
+                <button type="button" id="close-alert-btn" class="w-5 h-5 hover:bg-white/70 flex justify-center items-center transition-colors rounded-lg">
+                    <i class="fa-solid fa-x text-xs"></i>
+                </button>
+            </div>
+        @endif
         @if (session('success'))
             <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
                 {!! session('success') !!}
@@ -113,13 +124,13 @@
                             class="hidden" onchange="previewImage(this)">
 
                         <!-- Tombol Galeri -->
-                        <label for="galleryInput"
+                        <label for="cameraInput"
                             class="cursor-pointer px-4 py-2 text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-400 transition">
                             <i class="fas fa-images"></i>
                             Pilih Dari Perangkat
                         </label>
-                        <input type="file" id="galleryInput" name="photo" accept="image/*" class="hidden"
-                            onchange="previewImage(this)">
+                        {{-- <input type="file" id="galleryInput" name="photo" accept="image/*" class="hidden"
+                            onchange="previewImage(this)"> --}}
                     </div>
 
                     <!-- Preview -->
@@ -135,7 +146,7 @@
                 <div class="w-full justify-between flex items-center mb-4 ">
                     <label class="block font-semibold mb-1">Lokasi</label>
                     <button type="button" id="useNow"
-                        class="rounded border border-gray-300 px-2 py-[1px] bg-blue-500 text-white text-sm text-white flex items-center gap-1">
+                        class="rounded border border-gray-300 px-2 py-[1px] bg-blue-500 text-white text-sm flex items-center gap-1">
                         <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -177,6 +188,15 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        const alertSection = document.getElementById('alert-section');
+        const closeBtn = document.getElementById('close-alert-btn');
+
+        if (alertSection && closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                alertSection.classList.add('hidden');
+            });
+        }
+
         const useMyLocation = document.getElementById('useNow');
         useMyLocation.addEventListener('click', () => {
             tryUseGeolocation();

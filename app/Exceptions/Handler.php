@@ -50,15 +50,10 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e)
     {
         if ($e instanceof ThrottleRequestsException) {
-            if ($request->expectsJson()) {
-                dd('oakwoawwa');
-            }
-
             return redirect()->route('complaints.create')
                 ->withErrors(['too_many_requests' => 'Terlalu banyak permintaan. Silakan coba lagi setelah beberapa saat.'])
                 ->withInput();
-
-            // return dd('test no json');
         }
+        return parent::render($request, $e);
     }
 }

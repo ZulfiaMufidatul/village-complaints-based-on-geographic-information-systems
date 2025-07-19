@@ -68,7 +68,7 @@ class ComplaintController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required|string',
             'phone' => 'required|string',
             'email' => 'nullable|email',
@@ -77,40 +77,43 @@ class ComplaintController extends Controller
             'rt' => 'required|string',
             'infrastructure_category' => 'required|string',
             'description' => 'required|string',
-            'photo' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'longitude' => 'required|numeric',
             'latitude' => 'required|numeric',
         ]);
 
-        // Buat kode aduan
         $last = Complaint::latest('id')->first();
         $number = $last ? intval(substr($last->complaints_code, -4)) + 1 : 1;
-        $data['complaints_code'] = 'ADUAN-' . str_pad($number, 4, '0', STR_PAD_LEFT);
+        $validatedData['complaints_code'] = 'ADUAN-' . str_pad($number, 4, '0', STR_PAD_LEFT);
 
-        $data['photo'] = $request->file('photo')->store('complaints', 'public');
-        $data['date_time'] = now();
-        // Simpan ke database
-        $complaint = Complaint::create($data);
+        if ($request->hasFile('photo')) {
+            $validatedData['photo'] = $request->file('photo')->store('complaints', 'public');
+        } else {
+            $validatedData['photo'] = '';
+        }
 
-        if ($complaint->email) {
+        $validatedData['date_time'] = now();
+
+        $complaint = Complaint::create($validatedData);
+
+        if (!empty($complaint->email)) {
             Notification::route('mail', $complaint->email)
                 ->notify(new ComplaintCreatedNotification($complaint));
         }
 
-        // twilio
         $client = new Client(
             $this->twilio_id,
-            $this->twilio_token,
+            $this->twilio_token
         );
 
         $client->messages->create('whatsapp:+62895422622021', [
             'from' => 'whatsapp:' . $this->twilio_from_number,
-            'body' => 'Terima kasih',
+            'body' => 'Terima kasih sudah mengirimkan aduan. Kode aduan Anda: ' . $complaint->complaints_code,
         ]);
 
         return redirect('/')->with([
             'success' => 'Aduan berhasil dikirim!',
-            'complaints_code' => $data['complaints_code']
+            'complaints_code' => $complaint->complaints_code
         ]);
     }
 
