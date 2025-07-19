@@ -29,9 +29,9 @@ class HamletResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
-                ->label('Nama Dusun')
-                ->required()
-                ->maxLength(255),
+                    ->label('Nama Dusun')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -40,27 +40,29 @@ class HamletResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('no')
-                ->label('No')
-                ->state(function ($record, $livewire, $rowLoop) {
-                    return $rowLoop->iteration;
-                }),
+                    ->label('No')
+                    ->state(function ($record, $livewire, $rowLoop) {
+                        return $rowLoop->iteration;
+                    }),
 
                 TextColumn::make('name')
-                ->label('Nama Dusun')
-                ->sortable()
-                ->searchable(),
+                    ->label('Nama Dusun')
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('Ubah'),
+                Tables\Actions\DeleteAction::make()
+                    ->label('Hapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                    ->visible(fn () => auth()->user()->can('delete-hamlets')),
+                        ->visible(fn() => auth()->user()->can('delete-hamlets')),
                 ]),
             ]);
     }
@@ -80,7 +82,7 @@ class HamletResource extends Resource
             'edit' => Pages\EditHamlet::route('/{record}/edit'),
         ];
     }
-    
+
     // Akses: superadmin full, admin hanya view
     public static function canViewAny(): bool
     {

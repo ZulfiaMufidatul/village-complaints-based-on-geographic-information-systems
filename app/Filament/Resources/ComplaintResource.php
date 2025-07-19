@@ -116,7 +116,7 @@ class ComplaintResource extends Resource
                     ->dateTime('d M Y H:i'),
 
                 TextColumn::make('request_status')
-                    ->label('Request Status')
+                    ->label('Status Permintaan')
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
                         'approved' => 'success',
@@ -194,13 +194,18 @@ class ComplaintResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    ExportBulkAction::make()->exporter(ComplaintExporter::class),
+                    ExportBulkAction::make()
+                        ->exporter(ComplaintExporter::class)
+                        ->label('Ekspor Data Yang Dipilih'),
                     Tables\Actions\DeleteBulkAction::make()
-                        ->visible(fn() => Auth::user()->can('delete-complaints')),
+                        ->visible(fn() => Auth::user()->can('delete-complaints'))
+                        ->label('Hapus Yang Dipilih'),
                 ]),
             ])
             ->headerActions([
-                ExportAction::make()->exporter(ComplaintExporter::class)
+                ExportAction::make()
+                    ->exporter(ComplaintExporter::class)
+                    ->label('Ekspor Data'),
             ]);
     }
 

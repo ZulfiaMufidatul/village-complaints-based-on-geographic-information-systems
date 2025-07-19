@@ -17,10 +17,35 @@ class EditComplaint extends EditRecord
     protected ?string $oldRequestStatus = null;
     protected ?string $oldStatusComplaint = null;
 
+    public function getTitle(): string
+    {
+        return 'Proses Aduan';
+    }
+
+    public function getBreadcrumb(): string
+    {
+        return 'Proses';
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+            ->label('Hapus'),
+        ];
+    }
+
+    protected function getFormActions(): array
+    {
+        return [
+            Actions\Action::make('save')
+                ->label('Simpan Perubahan')
+                ->submit('save'),
+            Actions\Action::make('cancel')
+                ->label('Batal')
+                ->color('gray')
+                ->outlined()
+                ->url($this->getResource()::getUrl('index')),
         ];
     }
 
