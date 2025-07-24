@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\ExportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,3 +31,6 @@ Route::post('/complaints/store', [ComplaintController::class, 'store'])->name('c
 
 Route::get('/get-rw/{hamletId}', [ComplaintController::class, 'getRW']);
 Route::get('/get-rt/{hamletId}/{rwId}', [ComplaintController::class, 'getRT']);
+
+// Export PDF Data
+Route::get('/export-pdf', [ExportController::class, 'exportPdf'])->name('exportToPdf');

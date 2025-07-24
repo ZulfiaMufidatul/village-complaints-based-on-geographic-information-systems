@@ -13,6 +13,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Columns\TextColumn;
@@ -206,6 +207,10 @@ class ComplaintResource extends Resource
                 ExportAction::make()
                     ->exporter(ComplaintExporter::class)
                     ->label('Ekspor Data'),
+                Action::make("exportPdf")
+                    ->label("Ekspor PDF")
+                    ->icon('heroicon-o-printer')
+                    ->action('exportPdf')
             ]);
     }
 
