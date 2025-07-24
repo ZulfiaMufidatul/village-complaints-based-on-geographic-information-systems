@@ -45,10 +45,10 @@ class ComplaintExporter extends Exporter
     }
 
     public function handleCompleted(Export $export): void
-{
-    parent::handleCompleted($export); // tetap jalankan notifikasi bawaan Filament
+    {
+        parent::handleCompleted($export); // tetap jalankan notifikasi bawaan Filament
 
-    // Kirim notifikasi ke user yang menjalankan export
-    $export->user->notify(new ExportCompletedNotification($export));
-}
+        // Kirim notifikasi ke user yang menjalankan export
+        $export->user->notify(new ExportCompletedNotification($export));
+    }
 }
