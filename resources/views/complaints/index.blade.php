@@ -5,9 +5,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Beranda Pengaduan Infrastruktur</title>
+    {{-- tailwind --}}
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .card-hover {
+            transition: all 0.3s ease;
+        }
 
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
 </head>
 
 @if (session('success') && session('complaints_code'))
@@ -25,8 +35,27 @@
 @endif
 
 <body class="bg-blue-100 text-gray-800 font-sans">
+    <!-- Header dengan Gradient -->
+    <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white py-4 shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold">SIPKIN Bulakan</h1>
+                        <p class="text-sm opacity-90">Sistem Pengaduan Kerusakan Infrastruktur</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <div class="container mx-auto px-4 py-8 space-y-6">
-        <div class="bg-white shadow-md rounded-lg py-12 px-6 md:px-10 mb-6 mt-6">
+        <div class="bg-white shadow-md rounded-lg py-12 px-6 md:px-10 mb-6 mt-6 card-hover">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                 {{-- Tagline --}}
                 <div>
@@ -54,7 +83,7 @@
             </div>
         </div>
         <!-- FORM CARI -->
-        <div class="bg-white p-6 rounded-lg shadow-md">
+        <div class="bg-white p-6 rounded-lg shadow-md card-hover">
             <p>Sudah pernah melapor?</p>
             <p>Masukkan kode aduan Anda untuk melihat perkembangannya.</p><br>
             <form action="{{ route('complaints.track.post') }}" method="POST" class="flex flex-col sm:flex-row gap-3">
@@ -67,7 +96,7 @@
 
         <!-- HASIL PENCARIAN -->
         @if (isset($searchedCode))
-            <div class="bg-white rounded-lg border-t mt-8 pt-4">
+            <div class="bg-white rounded-lg border-t mt-8 pt-4 card-hover">
                 <h2 class="text-center text-lg font-semibold mb-4 pb-4 border-b">Hasil Pencarian</h2>
 
                 @if ($complaint)
@@ -134,7 +163,7 @@
 
 
         <!-- GRAFIK -->
-        <div class="bg-white p-6 rounded-lg shadow-md mt-6">
+        <div class="bg-white p-6 rounded-lg shadow-md mt-6 card-hover">
             <h3 class="text-lg font-semibold mb-4">Presentase Status Aduan</h3>
 
             <div class="flex flex-col md:flex-row items-center  gap-6">
@@ -156,8 +185,10 @@
 
     </div>
     <!-- FOOTER -->
-    <footer class="bg-gray-200 py-4 text-center text-sm text-gray-600 rounded">
-        &copy; {{ date('Y') }} Sistem Pengaduan Infrastruktur Desa
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-gray-400">© 2024 Sistem Pengaduan Masyarakat. Semua hak dilindungi.</p>
+        </div>
     </footer>
 
 </body>
