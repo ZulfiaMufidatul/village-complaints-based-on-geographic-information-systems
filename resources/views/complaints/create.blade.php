@@ -19,11 +19,13 @@
         {{-- <div class="alert alert-danger">
             {{ $errors->first('too_many_requests') }}
         </div> --}}
-        
+
         @if ($errors->has('too_many_requests'))
-            <div id="alert-section" class="w-full bg-red-50 border border-red-400 rounded-lg px-6 py-4 mb-6 flex justify-between items-center">
+            <div id="alert-section"
+                class="w-full bg-red-50 border border-red-400 rounded-lg px-6 py-4 mb-6 flex justify-between items-center">
                 <span class="text-gray-600">{{ $errors->first('too_many_requests') }}</span>
-                <button type="button" id="close-alert-btn" class="w-5 h-5 hover:bg-white/70 flex justify-center items-center transition-colors rounded-lg">
+                <button type="button" id="close-alert-btn"
+                    class="w-5 h-5 hover:bg-white/70 flex justify-center items-center transition-colors rounded-lg">
                     <i class="fa-solid fa-x text-xs"></i>
                 </button>
             </div>
@@ -298,9 +300,9 @@
                         const lng = position.coords.longitude;
 
                         const inside = leafletPip.pointInLayer([lng, lat], polygonLayer);
+                        // tombol lokasi sekarang
+                        // Comment mulai sini
                         if (inside.length === 0) {
-                            // alert("Lokasi Anda di luar wilayah yang diizinkan. Silakan pilih manual.");
-                            // return;
                             Swal.fire({
                                 icon: "error",
                                 title: "Gagal",
@@ -308,8 +310,7 @@
                             });
                             return;
                         }
-                        // console.log("📍 Lokasi dari GPS:", lat, lng);
-                        // console.log("✅ Polygon ditemukan:", inside.length);
+                        // Comment sampai sini
                         setMarker(lat, lng);
                         map.setView([lat, lng], 17);
                     },
