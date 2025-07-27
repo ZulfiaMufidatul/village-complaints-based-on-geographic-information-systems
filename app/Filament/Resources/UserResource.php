@@ -15,6 +15,7 @@ use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -28,18 +29,32 @@ class UserResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return Auth::user()?->hasRole('superadmin');
+        return auth()->user()->can('view-users');
     }
 
-    
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create-users');
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return auth()->user()->can('edit-users');
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return auth()->user()->can('delete-users');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Select::make('roles')
-                ->label('Role')
-                ->relationship('roles', 'name')
-                ->required(),
+                    ->label('Role')
+                    ->relationship('roles', 'name')
+                    ->required(),
 
                 TextInput::make('name')
                     ->required(),
@@ -50,14 +65,14 @@ class UserResource extends Resource
                     ->autocomplete('off'),
 
                 TextInput::make('password')
-                ->label('Password')
-                ->password()
-                ->autocomplete('new-password')
-                ->dehydrateStateUsing(fn($state) => filled($state) ? Hash::make($state) : null)
-                ->required(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
-                ->dehydrated(fn($state) => filled($state)) // hanya simpan jika diisi
-                ->default(null),
-                
+                    ->label('Password')
+                    ->password()
+                    ->autocomplete('new-password')
+                    ->dehydrateStateUsing(fn($state) => filled($state) ? Hash::make($state) : null)
+                    ->required(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
+                    ->dehydrated(fn($state) => filled($state)) // hanya simpan jika diisi
+                    ->default(null),
+
             ]);
     }
 

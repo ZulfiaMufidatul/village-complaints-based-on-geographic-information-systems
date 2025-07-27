@@ -20,6 +20,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
@@ -33,10 +34,25 @@ class ComplaintResource extends Resource
     protected static ?string $navigationGroup = 'App';
     protected static ?string $pluralLabel = 'Data Aduan';
 
+    // Batasi akses resource sesuai permissionnya
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view-complaints');
+    }
+
     public static function canCreate(): bool
     {
-        // Admin dan superadmin tidak bisa create dari panel
-        return false;
+        return auth()->user()->can('create-complaints');
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return auth()->user()->can('edit-complaints');
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return auth()->user()->can('delete-complaints');
     }
 
     public static function form(Form $form): Form

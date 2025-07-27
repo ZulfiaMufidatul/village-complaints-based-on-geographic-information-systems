@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class HamletResource extends Resource
@@ -94,12 +95,12 @@ class HamletResource extends Resource
         return auth()->user()->can('create-hamlets');
     }
 
-    public static function canEdit($record): bool
+    public static function canEdit(Model $record): bool
     {
         return auth()->user()->can('edit-hamlets');
     }
 
-    public static function canDelete($record): bool
+    public static function canDelete(Model $record): bool
     {
         return auth()->user()->can('delete-hamlets');
     }

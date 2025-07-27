@@ -15,6 +15,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,22 +31,22 @@ class InfrastructureCategoryResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return Auth::user()?->can('view-category');
+        return auth()->user()?->can('view-category');
     }
 
     public static function canCreate(): bool
     {
-        return Auth::user()?->can('create-category');
+        return auth()->user()?->can('create-category');
     }
 
-    public static function canEdit($record): bool
+    public static function canEdit(Model $record): bool
     {
-        return Auth::user()?->can('edit-category');
+        return auth()->user()?->can('edit-category');
     }
 
-    public static function canDelete($record): bool
+    public static function canDelete(Model $record): bool
     {
-        return Auth::user()?->can('delete-category');
+        return auth()->user()?->can('delete-category');
     }
 
     public static function form(Form $form): Form
@@ -86,9 +87,9 @@ class InfrastructureCategoryResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                ->label('Ubah'),
+                    ->label('Ubah'),
                 Tables\Actions\DeleteAction::make()
-                ->label('Hapus'),
+                    ->label('Hapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

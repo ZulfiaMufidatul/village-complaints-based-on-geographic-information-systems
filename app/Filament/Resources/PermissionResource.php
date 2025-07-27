@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Spatie\Permission\Models\Permission;
 
@@ -85,24 +86,24 @@ class PermissionResource extends Resource
         ];
     }
 
-    // Batasi akses hanya superadmin
+    // Batasi akses resource sesuai permissionnya
     public static function canViewAny(): bool
     {
-        return auth()->user()->hasRole('superadmin');
+        return auth()->user()->can('view-permissions');
     }
 
     public static function canCreate(): bool
     {
-        return auth()->user()->hasRole('superadmin');
+        return auth()->user()->can('create-permissions');
     }
 
-    public static function canEdit($record): bool
+    public static function canEdit(Model $record): bool
     {
-        return auth()->user()->hasRole('superadmin');
+        return auth()->user()->can('edit-permissions');
     }
 
-    public static function canDelete($record): bool
+    public static function canDelete(Model $record): bool
     {
-        return auth()->user()->hasRole('superadmin');
+        return auth()->user()->can('delete-permissions');
     }
 }

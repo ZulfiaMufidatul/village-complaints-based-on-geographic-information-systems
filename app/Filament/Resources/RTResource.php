@@ -15,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,7 +27,7 @@ class RTResource extends Resource
     protected static ?string $navigationGroup = 'Sistem - Geografis';
     protected static ?string $navigationLabel = 'RT';
     protected static ?string $pluralLabel = 'Data RT';
-    
+
     // hak akses
     public static function canViewAny(): bool
     {
@@ -38,12 +39,12 @@ class RTResource extends Resource
         return Auth::user()->can('create-rt');
     }
 
-    public static function canEdit($record): bool
+    public static function canEdit(Model $record): bool
     {
         return Auth::user()->can('edit-rt');
     }
 
-    public static function canDelete($record): bool
+    public static function canDelete(Model $record): bool
     {
         return Auth::user()->can('delete-rt');
     }
@@ -57,7 +58,7 @@ class RTResource extends Resource
                     ->label('Dusun')
                     ->relationship('hamlet', 'name')
                     ->reactive() // saat Dusun diganti langsung trigger update pilihan RW.
-                    ->afterStateUpdated(fn(callable $set) => $set('rw_id', null)) 
+                    ->afterStateUpdated(fn(callable $set) => $set('rw_id', null))
                     ->required(),
                 Select::make('rw_id')
                     ->label('RW')
@@ -89,14 +90,14 @@ class RTResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                ->label('Ubah'),
+                    ->label('Ubah'),
                 Tables\Actions\DeleteAction::make()
-                ->label('Hapus'),
+                    ->label('Hapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                    ->visible(fn() => auth()->user()->can('delete-rt')),
+                        ->visible(fn() => auth()->user()->can('delete-rt')),
                 ]),
             ]);
     }
