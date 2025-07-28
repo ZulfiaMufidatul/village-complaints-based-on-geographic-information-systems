@@ -23,6 +23,28 @@ class PermissionResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Sistem';
 
+
+    // Batasi akses resource sesuai permissionnya
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view-permissions');
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create-permissions');
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return auth()->user()->can('edit-permissions');
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return auth()->user()->can('delete-permissions');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -84,26 +106,5 @@ class PermissionResource extends Resource
             'create' => Pages\CreatePermission::route('/create'),
             // 'edit' => Pages\EditPermission::route('/{record}/edit'),
         ];
-    }
-
-    // Batasi akses resource sesuai permissionnya
-    public static function canViewAny(): bool
-    {
-        return auth()->user()->can('view-permissions');
-    }
-
-    public static function canCreate(): bool
-    {
-        return auth()->user()->can('create-permissions');
-    }
-
-    public static function canEdit(Model $record): bool
-    {
-        return auth()->user()->can('edit-permissions');
-    }
-
-    public static function canDelete(Model $record): bool
-    {
-        return auth()->user()->can('delete-permissions');
     }
 }
