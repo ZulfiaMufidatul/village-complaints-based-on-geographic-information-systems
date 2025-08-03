@@ -39,3 +39,24 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+    <script>
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            Swal.fire({
+                title: 'Anda yakin ingin keluar?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Keluar',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '{{ route('logout') }}';
+                }
+            });
+        });
+    </script>
+@endpush
