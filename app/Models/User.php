@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Filament\Models\Contracts\HasAvatar;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable implements HasAvatar
@@ -22,6 +23,7 @@ class User extends Authenticatable implements HasAvatar
      */
     protected $fillable = [
         'name',
+        'nik_id',
         'email',
         'password',
         'avatar_url',
@@ -51,5 +53,10 @@ class User extends Authenticatable implements HasAvatar
         // $avatarColumn = config('filament-edit-profile.avatar_column', 'avatar_url');
         // return $this->$avatarColumn ? Storage::url($this->$avatarColumn) : null;
         return $this->avatar_url ? Storage::url($this->avatar_url) : null;
+    }
+
+    public function nik(): BelongsTo
+    {
+        return $this->belongsTo(NIK::class);
     }
 }
