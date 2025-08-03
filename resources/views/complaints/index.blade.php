@@ -6,18 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Beranda Pengaduan Infrastruktur</title>
     {{-- tailwind --}}
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-
-        .card-hover:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-    </style>
 </head>
 
 @if (session('success') && session('complaints_code'))
@@ -34,10 +25,10 @@
     </script>
 @endif
 
-<body class="bg-blue-100 text-gray-800 font-sans">
+<body class="bg-blue-100 text-gray-800 font-sans relative">
     <!-- Header dengan Gradient -->
-    <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white py-4 shadow-lg">
-        <div class="container mx-auto px-4">
+    <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white py-4 shadow-lg sticky top-0 z-50">
+        <div class="mx-auto px-14">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
@@ -49,6 +40,18 @@
                         <h1 class="text-xl font-bold">SIPKIN Bulakan</h1>
                         <p class="text-sm opacity-90">Sistem Pengaduan Kerusakan Infrastruktur</p>
                     </div>
+                </div>
+
+                <div>
+                    @if (Auth::check())
+                        <button id="logoutBtn" class="px-4 py-2 rounded-md text-white transition-all duration-300 hover:bg-white hover:text-blue-600 font-semibold"> 
+                            Keluar
+                        </button>
+                    @else
+                    <a href="{{ route('login') }}" class="px-4 py-2 rounded-md text-white transition-all duration-300 hover:bg-white hover:text-blue-600 font-semibold"> 
+                        Masuk
+                    </a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -82,10 +85,11 @@
                 </div>
             </div>
         </div>
+
         <!-- FORM CARI -->
-        <div class="bg-white p-6 rounded-lg shadow-md card-hover">
-            <p>Sudah pernah melapor?</p>
-            <p>Masukkan kode aduan Anda untuk melihat perkembangannya.</p><br>
+        <div data-aos="fade-up" class="bg-white p-6 rounded-lg shadow-md card-hover">
+            <h2 class="text-lg font-semibold mb-2">Sudah pernah melapor?</h2>
+            <p class="text-sm text-gray-500">Masukkan kode aduan Anda untuk melihat perkembangannya.</p><br>
             <form action="{{ route('complaints.track.post') }}" method="POST" class="flex flex-col sm:flex-row gap-3">
                 @csrf
                 <input type="text" name="complaints_code" placeholder="Masukkan Kode Aduan"
@@ -163,7 +167,7 @@
 
 
         <!-- GRAFIK -->
-        <div class="bg-white p-6 rounded-lg shadow-md mt-6 card-hover">
+        <div data-aos="fade-up" class="bg-white p-6 rounded-lg shadow-md mt-6 card-hover">
             <h3 class="text-lg font-semibold mb-4">Presentase Status Aduan</h3>
 
             <div class="flex flex-col md:flex-row items-center  gap-6">
@@ -196,7 +200,26 @@
 </html>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    const logoutBtn = document.getElementById('logoutBtn');
+    logoutBtn.addEventListener('click', () => {
+        Swal.fire({
+            title: 'Anda yakin ingin keluar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Keluar',
+            cancelButtonText: 'Batal',
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '{{ route('logout') }}';
+            }
+        });
+    });
+
     const ctx = document.getElementById('complaintPieChart');
 
     new Chart(ctx, {
