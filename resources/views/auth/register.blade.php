@@ -15,7 +15,7 @@
                         {{ $errors->has('nik') ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500' }}"
                     placeholder="Masukkan NIK">
                 @error('nik')
-                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    <p class="text-sm text-red-600 mt-1 font-semibold">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -27,7 +27,7 @@
                         {{ $errors->has('name') ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500' }}"
                     placeholder="Masukkan nama">
                 @error('name')
-                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    <p class="text-sm text-red-600 mt-1 font-semibold">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -39,7 +39,7 @@
                         {{ $errors->has('email') ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500' }}"
                     placeholder="Masukkan email">
                 @error('email')
-                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    <p class="text-sm text-red-600 mt-1 font-semibold">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -50,7 +50,7 @@
                         {{ $errors->has('password') ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500' }}"
                     placeholder="Masukkan password">
                 @error('password')
-                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    <p class="text-sm text-red-600 mt-1 font-semibold">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -61,7 +61,7 @@
                         {{ $errors->has('password_confirmation') ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500' }}"
                     placeholder="Masukkan konfirmasi password">
                 @error('password_confirmation')
-                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    <p class="text-sm text-red-600 mt-1 font-semibold">{{ $message }}</p>
                 @enderror
             </div>
 
