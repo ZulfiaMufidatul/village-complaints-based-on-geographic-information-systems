@@ -3,6 +3,7 @@
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,11 +37,13 @@ Route::get('/get-rt/{hamletId}/{rwId}', [ComplaintController::class, 'getRT']);
 // Export PDF Data
 Route::get('/export-pdf', [ExportController::class, 'exportPdf'])->name('exportToPdf');
 
-// Login
+// Authentication
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'loginPost'])->name('login.post');
-
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register', [AuthController::class, 'registerPost'])->name('register.post');
+
+// Profile
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
