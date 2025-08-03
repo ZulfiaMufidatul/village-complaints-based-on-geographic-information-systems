@@ -1,62 +1,9 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('complaints.layouts.app')
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Beranda Pengaduan Infrastruktur</title>
-    {{-- tailwind --}}
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-
-@if (session('success') && session('complaints_code'))
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil!',
-                html: `Aduan berhasil dikirim!<br>Simpan kode ini untuk melacak aduan Anda.<br><br><strong>Kode Aduan: {{ session('complaints_code') }}</strong>`,
-                confirmButtonText: 'Tutup',
-                confirmButtonColor: '#7C3AED',
-            });
-        });
-    </script>
-@endif
-
-<body class="bg-blue-100 text-gray-800 font-sans relative">
-    <!-- Header dengan Gradient -->
-    <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white py-4 shadow-lg sticky top-0 z-50">
-        <div class="mx-auto px-14">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-bold">SIPKIN Bulakan</h1>
-                        <p class="text-sm opacity-90">Sistem Pengaduan Kerusakan Infrastruktur</p>
-                    </div>
-                </div>
-
-                <div>
-                    @if (Auth::check())
-                        <button id="logoutBtn" class="px-4 py-2 rounded-md text-white transition-all duration-300 hover:bg-white hover:text-blue-600 font-semibold"> 
-                            Keluar
-                        </button>
-                    @else
-                    <a href="{{ route('login') }}" class="px-4 py-2 rounded-md text-white transition-all duration-300 hover:bg-white hover:text-blue-600 font-semibold"> 
-                        Masuk
-                    </a>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
-    
+@section('title')
+    Beranda Pengaduan Infrastruktur
+@endsection
+@section('content')
     <div class="container mx-auto px-4 py-8 space-y-6">
         <div class="bg-white shadow-md rounded-lg py-12 px-6 md:px-10 mb-6 mt-6 card-hover">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
@@ -111,8 +58,7 @@
                                 <img src="{{ asset('storage/' . $complaint->photo) }}" alt="Foto Aduan"
                                     class="rounded w-full object-cover max-h-48 ring-1 ring-gray-300">
                             @else
-                                <div
-                                    class="w-full h-48 bg-gray-200 rounded flex items-center justify-center text-gray-500">
+                                <div class="w-full h-48 bg-gray-200 rounded flex items-center justify-center text-gray-500">
                                     Tidak ada foto
                                 </div>
                             @endif
@@ -184,80 +130,84 @@
                 </div>
             </div>
         </div>
-
-
-
     </div>
-    <!-- FOOTER -->
-    <footer class="bg-gray-800 text-white py-8 mt-12">
-        <div class="container mx-auto px-4 text-center">
-            <p class="text-gray-400">© 2024 Sistem Pengaduan Masyarakat. Semua hak dilindungi.</p>
-        </div>
-    </footer>
+@endsection
 
-</body>
 
-</html>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    const logoutBtn = document.getElementById('logoutBtn');
-    logoutBtn.addEventListener('click', () => {
-        Swal.fire({
-            title: 'Anda yakin ingin keluar?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Keluar',
-            cancelButtonText: 'Batal',
-            reverseButtons: true,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = '{{ route('logout') }}';
-            }
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (session('success') && session('complaints_code'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    html: `Aduan berhasil dikirim!<br>Simpan kode ini untuk melacak aduan Anda.<br><br><strong>Kode Aduan: {{ session('complaints_code') }}</strong>`,
+                    confirmButtonText: 'Tutup',
+                    confirmButtonColor: '#7C3AED',
+                });
+            });
+        </script>
+    @endif
+    <script>
+        const logoutBtn = document.getElementById('logoutBtn');
+        logoutBtn.addEventListener('click', () => {
+            Swal.fire({
+                title: 'Anda yakin ingin keluar?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Keluar',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '{{ route('logout') }}';
+                }
+            });
         });
-    });
 
-    const ctx = document.getElementById('complaintPieChart');
+        const ctx = document.getElementById('complaintPieChart');
 
-    new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: ['Selesai', 'Diproses', 'Menunggu'],
-            datasets: [{
-                label: 'Presentase Aduan',
-                data: [
-                    {{ $finishedPercentage }},
-                    {{ $processedPercentage }},
-                    {{ $pendingPercentage }}
-                ],
-                backgroundColor: [
-                    '#22c55e', // green-500
-                    '#3b82f6', // blue-500
-                    '#facc15' // yellow-400
-                ],
-                borderColor: '#fff',
-                borderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false, // penting untuk mencegah ukuran meledak
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return context.label + ': ' + context.parsed + '%';
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Selesai', 'Diproses', 'Menunggu'],
+                datasets: [{
+                    label: 'Presentase Aduan',
+                    data: [
+                        {{ $finishedPercentage }},
+                        {{ $processedPercentage }},
+                        {{ $pendingPercentage }}
+                    ],
+                    backgroundColor: [
+                        '#22c55e', // green-500
+                        '#3b82f6', // blue-500
+                        '#facc15' // yellow-400
+                    ],
+                    borderColor: '#fff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // penting untuk mencegah ukuran meledak
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
                         }
+                    },
+                    legend: {
+                        display: false
                     }
-                },
-                legend: {
-                    display: false
                 }
             }
-        }
 
-    });
-</script>
+        });
+    </script>
+@endpush

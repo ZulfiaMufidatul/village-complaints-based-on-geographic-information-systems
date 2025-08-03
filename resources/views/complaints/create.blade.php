@@ -1,25 +1,24 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('complaints.layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Aduan Masyarakat</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="https://cdn.tailwindcss.com"></script>
+@section('title')
+    Form Aduan Masyarakat
+@endsection
+
+@push('styles')
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
         integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
+@endpush
 
-<body class="bg-blue-100 text-gray-800">
+@section('content')
     <div class="max-w-4xl mx-auto px-4 py-8">
-        <h1 class="text-2xl font-bold mb-6 text-center">Form Aduan Masyarakat</h1>
-        {{-- <div class="alert alert-danger">
-            {{ $errors->first('too_many_requests') }}
-        </div> --}}
-
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-center">Form Aduan Masyarakat</h1>
+            <a href="{{ route('index') }}" class="px-4 py-2 rounded-md transition-all duration-300 hover:bg-white hover:text-blue-600 font-semibold flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i>
+                Kembali
+            </a>
+        </div>
         @if ($errors->has('too_many_requests'))
             <div id="alert-section"
                 class="w-full bg-red-50 border border-red-400 rounded-lg px-6 py-4 mb-6 flex justify-between items-center">
@@ -38,7 +37,7 @@
         @endif
 
         <form method="POST" action="{{ route('complaints.store') }}" enctype="multipart/form-data"
-            class="bg-white p-6 rounded-lg shadow space-y-6">
+            class="bg-white px-10 py-6 rounded-lg shadow flex flex-col gap-6">
             @csrf
 
             <div>
@@ -49,19 +48,19 @@
 
             <div>
                 <label class="block font-semibold">Nama Pelapor</label>
-                <input type="text" name="name" value="{{ old('name') }}" required
+                <input placeholder="Masukkan Nama Anda" type="text" name="name" value="{{ old('name') ? old('name') : $user->name }}" required
                     class="w-full mt-1 rounded border border-gray-300 p-2">
             </div>
+            
             <div class="grid md:grid-cols-2 gap-4">
-
                 <div>
                     <label class="block font-semibold">No HP</label>
-                    <input type="text" name="phone" value="{{ old('phone') }}" required
+                    <input placeholder="Masukkan No HP Anda" type="text" name="phone" value="{{ old('phone') }}" required
                         class="w-full mt-1 rounded border border-gray-300 p-2">
                 </div>
                 <div>
                     <label class="block font-semibold">Email</label>
-                    <input type="email" name="email" value="{{ old('email') }}"
+                    <input placeholder="Masukkan Email Anda" type="email" name="email" value="{{ old('email') ? old('email') : $user->email }}" required
                         class="w-full mt-1 rounded border border-gray-300 p-2">
                 </div>
             </div>
@@ -109,7 +108,7 @@
 
             <div>
                 <label class="block font-semibold">Deskripsi</label>
-                <textarea name="description" required class="w-full mt-1 rounded border border-gray-300 p-2">{{ old('description') }}</textarea>
+                <textarea placeholder="Masukkan Deskripsi Aduan Anda" name="description" required class="w-full mt-1 rounded border border-gray-300 p-2">{{ old('description') }}</textarea>
             </div>
 
             <div>
@@ -158,7 +157,7 @@
                         <span>Gunakan Lokasi Saya Sekarang</span>
                     </button>
                 </div>
-                <div id="map" class="h-64 w-full rounded border"></div>
+                <div id="map" class="h-64 w-full rounded-lg border border-gray-300 z-0"></div>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -178,16 +177,18 @@
             <input type="hidden" name="longitude" id="longitude">
 
             <div class="text-end">
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Kirim
-                    Aduan</button>
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-medium">
+                    Kirim Aduan
+                </button>
             </div>
         </form>
     </div>
+@endsection
 
+@push('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-pip/leaflet-pip.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         const alertSection = document.getElementById('alert-section');
@@ -346,7 +347,5 @@
                 };
             }
         }
-    </script>
-</body>
-
-</html>
+    </script>    
+@endpush
