@@ -9,6 +9,7 @@ use App\Models\RT;
 use App\Models\RW;
 use App\Notifications\ComplaintCreatedNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Twilio\Rest\Client;
@@ -37,10 +38,12 @@ class ComplaintController extends Controller
         $finishedPercentage = $total > 0 ? round(($finished / $total) * 100, 1) : 0;
         $pendingPercentage = $total > 0 ? round(($pending / $total) * 100, 1) : 0;
 
+        $user = Auth::user();
         return view('complaints.index', compact(
             'processedPercentage',
             'finishedPercentage',
-            'pendingPercentage'
+            'pendingPercentage',
+            'user'
         ));
     }
 
@@ -48,8 +51,8 @@ class ComplaintController extends Controller
     {
         $hamlets = Hamlet::all();
         $categories = InfrastructureCategory::where('is_active', true)->get();
-
-        return view('complaints.create', compact('hamlets', 'categories'));
+        $user = Auth::user();
+        return view('complaints.create', compact('hamlets', 'categories', 'user'));
     }
 
     public function getRW($hamletId)
