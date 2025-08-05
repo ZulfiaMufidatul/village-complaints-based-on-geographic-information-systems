@@ -38,15 +38,13 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Blue,
             ])
-            ->brandLogo(asset('images/logo.png'))
+            ->brandLogo(asset('images/brand-logo.svg'))
             ->brandLogoHeight('3.5rem')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 // Pages\Dashboard::class,
                 Dashboard::class,
-
-
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
@@ -79,7 +77,7 @@ class AdminPanelProvider extends PanelProvider
             // ])
             ->userMenuItems([
                 MenuItem::make()
-                    ->label('Edit Profile')
+                    ->label('Edit Profil')
                     ->url(fn(): string => EditProfile::getUrl())
                     ->icon('heroicon-m-user-circle')
             ])

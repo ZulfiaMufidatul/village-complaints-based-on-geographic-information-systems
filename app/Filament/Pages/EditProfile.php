@@ -18,6 +18,7 @@ class EditProfile extends Page implements HasForms
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static bool $shouldRegisterNavigation = false;
     protected static string $view = 'filament.pages.edit-profile';
+    protected static ?string $title = 'Edit Profil';
 
     public ?array $data = [];
     public $name;
@@ -53,7 +54,7 @@ class EditProfile extends Page implements HasForms
             TextInput::make('email')
                 ->label('Email')
                 ->email()
-                ->required(),
+                ->disabled(),
 
             TextInput::make('password')
                 ->label('Password Baru')
