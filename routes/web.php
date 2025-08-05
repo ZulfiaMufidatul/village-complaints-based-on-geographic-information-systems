@@ -21,14 +21,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/', [ComplaintController::class, 'index'])->name('index');
-// POST track (via form pencarian)
-Route::post('/track', [ComplaintController::class, 'track'])->name('complaints.track.post');
-// GET track (via link di email)
-Route::get('/track/{complaints_code}', [ComplaintController::class, 'trackCode'])->name('complaints.track');
-Route::get('/track/{complaints_code}/detail', [ComplaintController::class, 'showDetail'])->name('complaints.detail');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', [ComplaintController::class, 'index'])->name('index');
+    // POST track (via form pencarian)
+    Route::post('/track', [ComplaintController::class, 'track'])->name('complaints.track.post');
+    // GET track (via link di email)
+
+    Route::get('/track/{complaints_code}', [ComplaintController::class, 'trackCode'])->name('complaints.track');
+    Route::get('/track/{complaints_code}/detail', [ComplaintController::class, 'showDetail'])->name('complaints.detail');
+    
     Route::get('/complaints', [ComplaintController::class, 'create'])->name('complaints.create');
     Route::post('/complaints/store', [ComplaintController::class, 'store'])->name('complaints.store')->middleware("throttle:complaints");
 });
