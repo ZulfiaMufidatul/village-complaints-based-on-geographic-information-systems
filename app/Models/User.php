@@ -57,6 +57,6 @@ class User extends Authenticatable implements HasAvatar, MustVerifyEmail
 
     public function nik(): BelongsTo
     {
-        return $this->belongsTo(NIK::class);
+        return $this->belongsTo(NIK::class, 'nik_id');
     }
 }
