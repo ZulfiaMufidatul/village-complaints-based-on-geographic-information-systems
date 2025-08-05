@@ -11,7 +11,7 @@
     </div>
 
     {{-- Peta Aduan --}}
-    <div class="mb-6">
+    <div class="mb-6 bg-white rounded-lg shadow-md border-none border outline-none dark:bg-gray-800">
         @livewire(\App\Filament\Widgets\ComplaintMap::class)
     </div>
 
