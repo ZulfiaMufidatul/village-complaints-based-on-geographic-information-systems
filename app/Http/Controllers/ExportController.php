@@ -10,7 +10,6 @@ class ExportController extends Controller
 {
     public function exportPdf(Request $request)
     {
-        // dd($request->all());
         if ($request->filled('start') && $request->filled('end')) {
             $data = Complaint::whereBetween('created_at', [$request->start, $request->end])->get();
         } else {

@@ -22,8 +22,8 @@ Route::get('/', function () {
 });
 
 
+Route::get('/', [ComplaintController::class, 'index'])->name('index');
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/', [ComplaintController::class, 'index'])->name('index');
     // POST track (via form pencarian)
     Route::post('/track', [ComplaintController::class, 'track'])->name('complaints.track.post');
     // GET track (via link di email)
