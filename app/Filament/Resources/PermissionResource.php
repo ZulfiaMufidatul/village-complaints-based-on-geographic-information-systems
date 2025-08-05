@@ -20,29 +20,29 @@ class PermissionResource extends Resource
 {
     protected static ?string $model = Permission::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-lock-closed';
     protected static ?string $navigationGroup = 'Sistem';
 
 
     // Batasi akses resource sesuai permissionnya
     public static function canViewAny(): bool
     {
-        return auth()->user()->can('view-permissions');
+        return auth()->user()->can('view-permission');
     }
 
     public static function canCreate(): bool
     {
-        return auth()->user()->can('create-permissions');
+        return auth()->user()->can('create-permission');
     }
 
     public static function canEdit(Model $record): bool
     {
-        return auth()->user()->can('edit-permissions');
+        return auth()->user()->can('edit-permission');
     }
 
     public static function canDelete(Model $record): bool
     {
-        return auth()->user()->can('delete-permissions');
+        return auth()->user()->can('delete-permission');
     }
 
     public static function form(Form $form): Form

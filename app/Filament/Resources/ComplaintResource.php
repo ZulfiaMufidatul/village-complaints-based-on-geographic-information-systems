@@ -29,7 +29,7 @@ class ComplaintResource extends Resource
 {
     protected static ?string $model = Complaint::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-megaphone';
     protected static ?string $navigationLabel = 'Aduan';
     protected static ?string $navigationGroup = 'App';
     protected static ?string $pluralLabel = 'Data Aduan';
@@ -119,14 +119,25 @@ class ComplaintResource extends Resource
                     ->label('No')
                     ->rowIndex(isFromZero: false),
 
+                TextColumn::make('complaints_code')
+                    ->label('Kode Aduan')
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('hamlet')
-                    ->label('Dusun'),
+                    ->label('Dusun')
+                    ->searchable()
+                    ->sortable(),
 
                 TextColumn::make('infrastructure_category')
-                    ->label('Kategori Infrastruktur'),
+                    ->label('Kategori Infrastruktur')
+                    ->searchable()
+                    ->sortable(),
 
                 TextColumn::make('name')
-                    ->label('Pelapor'),
+                    ->label('Pelapor')
+                    ->searchable()
+                    ->sortable(),
 
                 TextColumn::make('date_time')
                     ->label('Waktu Pengaduan')

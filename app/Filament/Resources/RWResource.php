@@ -22,7 +22,7 @@ class RWResource extends Resource
 {
     protected static ?string $model = RW::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-globe-asia-australia';
     protected static ?string $navigationGroup = 'Sistem - Geografis';
     protected static ?string $navigationLabel = 'RW';
     protected static ?string $pluralLabel = 'Data RW';
