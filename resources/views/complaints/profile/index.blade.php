@@ -21,8 +21,12 @@
                 @csrf
 
                 <div class="flex flex-col gap-2">
+                    <label for="nik" class="text-sm font-medium">NIK</label>
+                    <input type="text" id="nik" name="nik" disabled class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ $user->nik->value }}">
+                </div>
+                <div class="flex flex-col gap-2">
                     <label for="name" class="text-sm font-medium">Nama</label>
-                <input type="text" id="name" class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ $user->name }}">
+                    <input type="text" id="name" class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ $user->name }}">
                 </div>
                 <div class="flex flex-col gap-2">
                     <label for="email" class="text-sm font-medium">Email</label>
