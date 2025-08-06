@@ -33,7 +33,7 @@ class PeopleResource extends Resource
             ->schema([
                 TextInput::make('nik_value')
                 ->label('NIK')
-                ->disabled()
+                ->placeholder('Masukkan NIK')
                 ->dehydrated(false)
                 ->afterStateHydrated(function (TextInput $component, $state, $record) {
                     if ($record && $record->nik) {
@@ -42,9 +42,10 @@ class PeopleResource extends Resource
                 }),
                 TextInput::make('email')
                     ->label('Email')
-                    ->disabled(),
+                    ->placeholder('Masukkan Email'),
                 TextInput::make('name')
-                    ->label('Nama'),
+                    ->label('Nama')
+                    ->placeholder('Masukkan Nama'),
             ]);
     }
 

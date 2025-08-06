@@ -30,10 +30,12 @@ class RoleResource extends Resource
             ->schema([
                 TextInput::make('name')
                     ->required()
+                    ->placeholder('Masukkan Nama Role')
                     ->maxLength(255),
                 TextInput::make('guard_name')
                     ->default('web')
                     ->disabled()
+                    ->placeholder('Masukkan Guard')
                     ->required(),
                 CheckboxList::make('permissions')
                     ->label('Permissions')
@@ -47,11 +49,6 @@ class RoleResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('no')
-                    ->label('No')
-                    ->state(function ($record, $livewire, $rowLoop) {
-                        return $rowLoop->iteration;
-                    }),
                 TextColumn::make('name')->label('Nama Role'),
                 TextColumn::make('guard_name')->label('Guard'),
             ])

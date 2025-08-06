@@ -52,6 +52,7 @@ class PermissionResource extends Resource
                 TextInput::make('name')
                     ->label('Nama Permission')
                     ->required()
+                    ->placeholder('Masukkan Nama Permission')
                     ->maxLength(255),
 
                 TextInput::make('guard_name')
@@ -66,12 +67,6 @@ class PermissionResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('no')
-                    ->label('No')
-                    ->state(function ($record, $livewire, $rowLoop) {
-                        return $rowLoop->iteration;
-                    }),
-
                 TextColumn::make('name')
                     ->sortable()
                     ->searchable(),

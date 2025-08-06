@@ -56,6 +56,7 @@ class RWResource extends Resource
                     ->label('Dusun'),
                 TextInput::make('name')
                     ->required()
+                    ->placeholder('Masukkan Nama RW')
                     ->label('Nama RW'),
 
             ]);

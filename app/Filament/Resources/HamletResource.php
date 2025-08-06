@@ -31,6 +31,7 @@ class HamletResource extends Resource
             ->schema([
                 TextInput::make('name')
                     ->label('Nama Dusun')
+                    ->placeholder('Masukkan Nama Dusun')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -40,12 +41,6 @@ class HamletResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('no')
-                    ->label('No')
-                    ->state(function ($record, $livewire, $rowLoop) {
-                        return $rowLoop->iteration;
-                    }),
-
                 TextColumn::make('name')
                     ->label('Nama Dusun')
                     ->sortable()

@@ -72,6 +72,7 @@ class RTResource extends Resource
                     ->required(),
                 TextInput::make('name')
                     ->label('RT')
+                    ->placeholder('Masukkan RT')
                     ->required(),
             ]);
     }

@@ -12,7 +12,7 @@
             <p class="text-red-500 font-medium">{{ $message }}</p>
         @enderror
 
-        <span>Kode Otp : {{ session('password_reset_otp') }}</span>
+        {{-- <span>Kode Otp : {{ session('password_reset_otp') }}</span> --}}
         <form action="{{ route('verify-password-otp') }}" method="post" class="flex flex-col gap-2">
             @csrf
             <input type="number" name="otp" placeholder="Kode OTP" required min="100000" max="999999"

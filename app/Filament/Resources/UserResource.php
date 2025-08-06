@@ -57,12 +57,14 @@ class UserResource extends Resource
                     ->required(),
 
                 TextInput::make('name')
-                    ->required(),
+                    ->required()
+                    ->placeholder('Masukkan Nama'),
 
                 TextInput::make('email')
                     ->email()
                     ->required()
-                    ->autocomplete('off'),
+                    ->autocomplete('off')
+                    ->placeholder('Masukkan Email'),
 
                 TextInput::make('password')
                     ->label('Password')
@@ -71,7 +73,8 @@ class UserResource extends Resource
                     ->dehydrateStateUsing(fn($state) => filled($state) ? Hash::make($state) : null)
                     ->required(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
                     ->dehydrated(fn($state) => filled($state)) // hanya simpan jika diisi
-                    ->default(null),
+                    ->default(null)
+                    ->placeholder('Masukkan Password'),
 
             ]);
     }
