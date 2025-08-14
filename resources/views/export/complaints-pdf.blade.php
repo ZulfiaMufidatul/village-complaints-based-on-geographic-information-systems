@@ -17,7 +17,7 @@
             font-size: 12px;
             line-height: 1.4;
             color: #333;
-            margin: 20px;
+            margin: 13px;
         }
 
         .kop-image {
@@ -70,6 +70,8 @@
             background: #42a5f5 !important;
             color: #ffffff !important;
             -webkit-print-color-adjust: exact;
+            font-size: 10px;
+            padding: 6px 4px;
         }
 
         .data-table tbody tr:nth-child(even) {
@@ -85,7 +87,7 @@
         }
 
         .data-table tbody td {
-            padding: 10px 8px;
+            padding: 8px 6px;
             border: 1px solid #bbdefb;
             font-size: 9px;
             vertical-align: top;
@@ -228,7 +230,6 @@
                     <th>Email</th>
                     <th>Deskripsi</th>
                     <th>Longitude, Latitude</th>
-                    <th>Latitude</th>
                     <th>Status Permintaan</th>
                     <th>Status Pengaduan</th>
                 </tr>
