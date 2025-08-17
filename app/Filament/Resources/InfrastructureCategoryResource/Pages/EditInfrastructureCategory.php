@@ -4,6 +4,7 @@ namespace App\Filament\Resources\InfrastructureCategoryResource\Pages;
 
 use App\Filament\Resources\InfrastructureCategoryResource;
 use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 
 class EditInfrastructureCategory extends EditRecord
@@ -23,8 +24,11 @@ class EditInfrastructureCategory extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make()
-                ->label('Hapus'),
+            Actions\DeleteAction::make(),
+            Action::make('back')
+                ->label('Kembali')
+                ->color('primary')
+                ->url(InfrastructureCategoryResource::getUrl('index'))
         ];
     }
 

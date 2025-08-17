@@ -60,10 +60,29 @@ class NIKResource extends Resource
                     }),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                ->label('Status')
+                ->options([
+                    'aktif' => 'Aktif',
+                    'tidak_aktif' => 'Tidak Aktif',
+                ])
+                ->query(function ($query, array $data) {
+                    if (($data['value'] ?? null) === 'aktif') {
+                        $query->whereHas('user');
+                    } elseif (($data['value'] ?? null) === 'tidak_aktif') {
+                        $query->whereDoesntHave('user');
+                    }
+                }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->before(function ($record) {
+                        if ($record->user) {
+                            $record->user->nik_id = null;
+                            $record->user->save();
+                        }
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

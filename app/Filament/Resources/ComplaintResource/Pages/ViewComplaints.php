@@ -13,6 +13,7 @@ use Filament\Infolists\Components\Split;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ViewEntry;
 use Filament\Infolists\Infolist;
+use Filament\Actions\Action;
 
 class ViewComplaint extends ViewRecord
 {
@@ -26,6 +27,16 @@ class ViewComplaint extends ViewRecord
     public function getBreadcrumb(): string
     {
         return 'Detail';
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('back')
+                ->label('Kembali')
+                ->color('primary')
+                ->url(ComplaintResource::getUrl('index'))
+        ];
     }
 
     public function infolist(Infolist $infolist): Infolist

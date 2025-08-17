@@ -5,6 +5,7 @@ namespace App\Filament\Resources\ComplaintResource\Pages;
 use App\Filament\Resources\ComplaintResource;
 use App\Mail\ComplaintStatusUpdated;
 use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -32,6 +33,10 @@ class EditComplaint extends EditRecord
         return [
             Actions\DeleteAction::make()
             ->label('Hapus'),
+            Action::make('back')
+                ->label('Kembali')
+                ->color('primary')
+                ->url(ComplaintResource::getUrl('index'))
         ];
     }
 

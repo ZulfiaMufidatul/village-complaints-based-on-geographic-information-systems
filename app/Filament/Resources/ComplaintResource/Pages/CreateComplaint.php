@@ -4,6 +4,7 @@ namespace App\Filament\Resources\ComplaintResource\Pages;
 
 use App\Filament\Resources\ComplaintResource;
 use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateComplaint extends CreateRecord
@@ -13,5 +14,15 @@ class CreateComplaint extends CreateRecord
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('back')
+                ->label('Kembali')
+                ->color('primary')
+                ->url(ComplaintResource::getUrl('index'))
+        ];
     }
 }

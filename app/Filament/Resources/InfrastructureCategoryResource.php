@@ -70,10 +70,6 @@ class InfrastructureCategoryResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('no')
-                    ->label('No')
-                    ->state(fn($record, $livewire, $rowLoop) => $rowLoop->iteration),
-
                 TextColumn::make('name')
                     ->label('Nama Kategori')
                     ->searchable(),

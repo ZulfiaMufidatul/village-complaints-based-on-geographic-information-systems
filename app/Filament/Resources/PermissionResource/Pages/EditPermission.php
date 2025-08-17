@@ -4,6 +4,7 @@ namespace App\Filament\Resources\PermissionResource\Pages;
 
 use App\Filament\Resources\PermissionResource;
 use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 
 class EditPermission extends EditRecord
@@ -14,6 +15,10 @@ class EditPermission extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+            Action::make('back')
+                ->label('Kembali')
+                ->color('primary')
+                ->url(PermissionResource::getUrl('index'))
         ];
     }
 

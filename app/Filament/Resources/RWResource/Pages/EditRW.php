@@ -4,6 +4,7 @@ namespace App\Filament\Resources\RWResource\Pages;
 
 use App\Filament\Resources\RWResource;
 use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 
 class EditRW extends EditRecord
@@ -14,6 +15,10 @@ class EditRW extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+            Action::make('back')
+                ->label('Kembali')
+                ->color('primary')
+                ->url(RWResource::getUrl('index'))
         ];
     }
     

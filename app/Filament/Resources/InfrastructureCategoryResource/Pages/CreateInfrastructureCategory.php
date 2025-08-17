@@ -4,6 +4,7 @@ namespace App\Filament\Resources\InfrastructureCategoryResource\Pages;
 
 use App\Filament\Resources\InfrastructureCategoryResource;
 use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateInfrastructureCategory extends CreateRecord
@@ -14,5 +15,15 @@ class CreateInfrastructureCategory extends CreateRecord
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('back')
+                ->label('Kembali')
+                ->color('primary')
+                ->url(InfrastructureCategoryResource::getUrl('index'))
+        ];
     }
 }

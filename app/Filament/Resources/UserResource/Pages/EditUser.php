@@ -4,6 +4,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
 use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 
 class EditUser extends EditRecord
@@ -14,6 +15,10 @@ class EditUser extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+            Action::make('back')
+                ->label('Kembali')
+                ->color('primary')
+                ->url(UserResource::getUrl('index'))
         ];
     }
 
