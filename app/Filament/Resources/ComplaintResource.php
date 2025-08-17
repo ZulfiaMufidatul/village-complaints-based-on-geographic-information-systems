@@ -73,7 +73,10 @@ class ComplaintResource extends Resource
                         fn($state, callable $set) => $state === 'rejected'
                             ? $set('status_complaint', 'cancel')
                             : null
-                    ),
+                    )
+                    ->validationMessages([
+                        'required' => 'Status permintaan wajib diisi.',
+                    ]),
 
                 Select::make('status_complaint')
                     ->label('Status Aduan')
@@ -103,7 +106,10 @@ class ComplaintResource extends Resource
                     })
                     ->disabled(fn(callable $get) => $get('request_status') === 'rejected')
                     ->required()
-                    ->reactive(),
+                    ->reactive()
+                    ->validationMessages([
+                        'required' => 'Status aduan wajib diisi.',
+                    ]),
 
                 Textarea::make('response')
                     ->label('Tanggapan')

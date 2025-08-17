@@ -31,7 +31,10 @@ class RoleResource extends Resource
                 TextInput::make('name')
                     ->required()
                     ->placeholder('Masukkan Nama Role')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->validationMessages([
+                        'required' => 'Nama role wajib diisi.',
+                    ]),
                 TextInput::make('guard_name')
                     ->default('web')
                     ->disabled()
@@ -41,7 +44,10 @@ class RoleResource extends Resource
                     ->label('Permissions')
                     ->relationship('permissions', 'name')
                     ->columns(2)
-                    ->required(),
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Permissions wajib diisi.',
+                    ]),
             ]);
     }
 

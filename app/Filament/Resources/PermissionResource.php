@@ -53,7 +53,10 @@ class PermissionResource extends Resource
                     ->label('Nama Permission')
                     ->required()
                     ->placeholder('Masukkan Nama Permission')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->validationMessages([
+                        'required' => 'Nama permission wajib diisi.',
+                    ]),
 
                 TextInput::make('guard_name')
                     ->label('Guard')

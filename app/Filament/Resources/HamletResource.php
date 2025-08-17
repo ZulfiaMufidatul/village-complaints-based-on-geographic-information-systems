@@ -33,7 +33,10 @@ class HamletResource extends Resource
                     ->label('Nama Dusun')
                     ->placeholder('Masukkan Nama Dusun')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->validationMessages([
+                        'required' => 'Nama dusun wajib diisi.',
+                    ]),
             ]);
     }
 

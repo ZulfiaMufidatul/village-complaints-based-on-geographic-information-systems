@@ -55,7 +55,10 @@ class InfrastructureCategoryResource extends Resource
             ->schema([
                 TextInput::make('name')
                     ->label('Nama Kategori')
-                    ->required(),
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Nama kategori wajib diisi.',
+                    ]),
 
                 Toggle::make('is_active')
                     ->label('Aktif')

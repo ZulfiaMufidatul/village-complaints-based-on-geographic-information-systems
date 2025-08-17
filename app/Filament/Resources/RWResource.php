@@ -53,11 +53,17 @@ class RWResource extends Resource
                 Select::make('hamlet_id')
                     ->relationship('hamlet', 'name')
                     ->required()
-                    ->label('Dusun'),
+                    ->label('Dusun')
+                    ->validationMessages([
+                        'required' => 'Dusun wajib diisi.',
+                    ]),
                 TextInput::make('name')
                     ->required()
                     ->placeholder('Masukkan Nama RW')
-                    ->label('Nama RW'),
+                    ->label('Nama RW')
+                    ->validationMessages([
+                        'required' => 'Nama RW wajib diisi.',
+                    ]),
 
             ]);
     }

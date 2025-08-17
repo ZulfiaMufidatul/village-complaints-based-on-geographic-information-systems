@@ -59,7 +59,10 @@ class RTResource extends Resource
                     ->relationship('hamlet', 'name')
                     ->reactive() // saat Dusun diganti langsung trigger update pilihan RW.
                     ->afterStateUpdated(fn(callable $set) => $set('rw_id', null))
-                    ->required(),
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Dusun wajib diisi.',
+                    ]),
                 Select::make('rw_id')
                     ->label('RW')
                     ->options(function (callable $get) {
@@ -69,11 +72,17 @@ class RTResource extends Resource
                         }
                         return RW::where('hamlet_id', $hamletId)->pluck('name', 'id');
                     })
-                    ->required(),
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'RW wajib diisi.',
+                    ]),
                 TextInput::make('name')
                     ->label('RT')
                     ->placeholder('Masukkan RT')
-                    ->required(),
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'RT wajib diisi.',
+                    ]),
             ]);
     }
 

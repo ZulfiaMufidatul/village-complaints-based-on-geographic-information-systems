@@ -58,23 +58,32 @@ class UserResource extends Resource
 
                 TextInput::make('name')
                     ->required()
-                    ->placeholder('Masukkan Nama'),
+                    ->placeholder('Masukkan Nama')
+                    ->validationMessages([
+                        'required' => 'Nama wajib diisi.',
+                    ]),
 
                 TextInput::make('email')
                     ->email()
                     ->required()
                     ->autocomplete('off')
-                    ->placeholder('Masukkan Email'),
+                    ->placeholder('Masukkan Email')
+                    ->validationMessages([
+                        'required' => 'Email wajib diisi.',
+                    ]),
 
                 TextInput::make('password')
-                    ->label('Password')
+                    ->label('Kata Sandi')
                     ->password()
                     ->autocomplete('new-password')
                     ->dehydrateStateUsing(fn($state) => filled($state) ? Hash::make($state) : null)
                     ->required(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
                     ->dehydrated(fn($state) => filled($state)) // hanya simpan jika diisi
                     ->default(null)
-                    ->placeholder('Masukkan Password'),
+                    ->placeholder('Masukkan Kata Sandi')
+                    ->validationMessages([
+                        'required' => 'Kata sandi wajib diisi.',
+                    ]),
 
             ]);
     }
