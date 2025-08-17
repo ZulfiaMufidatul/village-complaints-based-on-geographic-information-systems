@@ -15,7 +15,7 @@
                 @if (Auth::check())
                 <div x-data="{profile: false}" class="relative">
                     <button @click="profile = !profile" class="px-4 py-2 rounded-md text-white transition-all duration-300 hover:bg-white hover:text-blue-600 font-semibold flex items-center gap-2">
-                        {{ $user->name }} <span><i class="fa-solid fa-chevron-down text-xs transform transition-all" :class="profile ? 'rotate-180' : ''"></i></span>
+                        {{ auth()->user()->name }} <span><i class="fa-solid fa-chevron-down text-xs transform transition-all" :class="profile ? 'rotate-180' : ''"></i></span>
                     </button>
                     <div x-cloak @click.away="profile = !profile" x-show="profile" class="absolute right-0 mt-2 w-36 bg-white shadow-lg rounded-md py-2">
                         <a href="{{ route('profile') }}" class="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 font-medium flex items-center gap-2">
