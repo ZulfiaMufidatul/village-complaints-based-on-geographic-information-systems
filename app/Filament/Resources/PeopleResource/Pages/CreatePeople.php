@@ -10,4 +10,11 @@ class CreatePeople extends CreateRecord
 {
     protected static string $resource = PeopleResource::class;
     protected static ?string $title = 'Tambah Data Masyarakat';
+
+    public function afterCreate(): void
+    {
+        $this->record->email_verified_at = now();
+        $this->record->save();
+        $this->record->assignRole('public');
+    }
 }

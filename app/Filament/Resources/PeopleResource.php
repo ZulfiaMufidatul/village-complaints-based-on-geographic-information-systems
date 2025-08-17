@@ -4,8 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PeopleResource\Pages;
 use App\Filament\Resources\PeopleResource\RelationManagers;
+use App\Models\NIK;
 use App\Models\User;
-use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,7 +15,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 
 class PeopleResource extends Resource
 {
@@ -31,21 +32,71 @@ class PeopleResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('nik_value')
-                ->label('NIK')
-                ->placeholder('Masukkan NIK')
-                ->dehydrated(false)
-                ->afterStateHydrated(function (TextInput $component, $state, $record) {
-                    if ($record && $record->nik) {
-                        $component->state($record->nik->value);
-                    }
-                }),
+                Select::make('nik_id')
+                    ->label('NIK')
+                    ->relationship('nik', 'value')
+                    ->options(function () {
+                        return NIK::whereDoesntHave('user')
+                            ->pluck('value', 'id');
+                    })
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'NIK wajib diisi.',
+                    ])
+                    ->afterStateHydrated(function (Select $component, $state, $record) {
+                        if ($record && $record->nik) {
+                            $component->state($record->nik->id);
+                        }
+                    }),
                 TextInput::make('email')
                     ->label('Email')
-                    ->placeholder('Masukkan Email'),
+                    ->placeholder('Masukkan Email')
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Email wajib diisi.',
+                    ]),
                 TextInput::make('name')
                     ->label('Nama')
-                    ->placeholder('Masukkan Nama'),
+                    ->placeholder('Masukkan Nama')
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Nama wajib diisi.',
+                    ]),
+                TextInput::make('password')
+                    ->label('Kata Sandi')
+                    ->placeholder('Masukkan Kata Sandi')
+                    ->password()
+                    ->required(fn ($context) => $context === 'create')
+                    ->dehydrateStateUsing(fn ($state) => filled($state) ? Hash::make($state) : null)
+                    ->validationMessages([
+                        'required' => 'Kata sandi wajib diisi.',
+                    ]),
+                TextInput::make('password_confirmation')
+                    ->label('Konfirmasi Kata Sandi')
+                    ->placeholder('Masukkan Konfirmasi Kata Sandi')
+                    ->password()
+                    ->dehydrated(false)
+                    ->required(fn ($context) => $context === 'create')
+                    ->same('password')
+                    ->validationMessages([
+                        'same' => 'Konfirmasi kata sandi harus sama dengan kata sandi.',
+                        'required' => 'Konfirmasi kata sandi wajib diisi.',
+                    ]),
+                // TextInput::make('password')
+                //     ->label('Kata Sandi')
+                //     ->placeholder('Masukkan Kata Sandi')
+                //     ->password()
+                //     ->required(fn ($context) => $context === 'create')
+                //     ->dehydrateStateUsing(fn ($state) => Hash::make($state)),
+                // TextInput::make('password_confirmation')
+                //     ->label('Konfirmasi Kata Sandi')
+                //     ->placeholder('Masukkan Konfirmasi Kata Sandi')
+                //     ->password()
+                //     ->dehydrated(false)
+                //     ->required(fn ($context) => $context === 'create')
+                //     ->dehydrateStateUsing(fn ($state) => Hash::make($state)),
             ]);
     }
 
