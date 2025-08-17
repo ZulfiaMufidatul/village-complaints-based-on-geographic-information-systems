@@ -54,13 +54,21 @@ class PeopleResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('nik.value')
-                    ->label('NIK'),
+                    ->label('NIK')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('name')
-                    ->label('Nama'),
+                    ->label('Nama')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('email')
-                    ->label('Email'),
+                    ->label('Email')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('created_at')
-                    ->label('Dibuat'),
+                    ->label('Dibuat')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 //
