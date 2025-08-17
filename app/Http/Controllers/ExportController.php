@@ -16,6 +16,6 @@ class ExportController extends Controller
             $data = Complaint::all();
         }
         $pdf = Pdf::loadView('export.complaints-pdf', compact('data'));
-        return $pdf->download('invoice.pdf');
+        return $pdf->stream('Aduan-Infrastruktur.pdf');
     }
 }
