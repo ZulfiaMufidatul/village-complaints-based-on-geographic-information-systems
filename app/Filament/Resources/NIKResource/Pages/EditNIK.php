@@ -15,11 +15,18 @@ class EditNIK extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->modalHeading('Hapus Data NIK'),
             Action::make('back')
                 ->label('Kembali')
                 ->color('primary')
                 ->url(NIKResource::getUrl('index'))
         ];
+    }
+
+    // redirect ke index
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
     }
 }

@@ -24,7 +24,8 @@ class EditInfrastructureCategory extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->modalHeading('Hapus Kategori Infrastruktur'),
             Action::make('back')
                 ->label('Kembali')
                 ->color('primary')

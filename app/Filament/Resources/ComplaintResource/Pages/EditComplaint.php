@@ -32,7 +32,8 @@ class EditComplaint extends EditRecord
     {
         return [
             Actions\DeleteAction::make()
-            ->label('Hapus'),
+                ->label('Hapus')
+                ->modalHeading('Hapus Data Aduan'),
             Action::make('back')
                 ->label('Kembali')
                 ->color('primary')

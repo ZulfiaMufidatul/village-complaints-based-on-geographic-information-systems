@@ -14,7 +14,8 @@ class EditRW extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->modalHeading('Hapus RW'),
             Action::make('back')
                 ->label('Kembali')
                 ->color('primary')

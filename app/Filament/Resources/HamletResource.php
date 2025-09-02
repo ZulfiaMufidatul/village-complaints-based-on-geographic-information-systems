@@ -44,6 +44,10 @@ class HamletResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex(isFromZero: false),
+
                 TextColumn::make('name')
                     ->label('Nama Dusun')
                     ->sortable()
@@ -56,7 +60,8 @@ class HamletResource extends Resource
                 Tables\Actions\EditAction::make()
                     ->label('Ubah'),
                 Tables\Actions\DeleteAction::make()
-                    ->label('Hapus'),
+                    ->label('Hapus')
+                    ->modalHeading('Hapus Data Dusun'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -80,8 +80,11 @@ class RWResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->visible(fn() => Auth::user()->can('edit-rw')),
-                Tables\Actions\DeleteAction::make()->visible(fn() => Auth::user()->can('delete-rw')),
+                Tables\Actions\EditAction::make()
+                    ->visible(fn() => Auth::user()->can('edit-rw')),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn() => Auth::user()->can('delete-rw'))
+                    ->modalHeading('Hapus Data RW'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

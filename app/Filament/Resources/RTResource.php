@@ -102,7 +102,8 @@ class RTResource extends Resource
                 Tables\Actions\EditAction::make()
                     ->label('Ubah'),
                 Tables\Actions\DeleteAction::make()
-                    ->label('Hapus'),
+                    ->label('Hapus')
+                    ->modalHeading('Hapus Data RT'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

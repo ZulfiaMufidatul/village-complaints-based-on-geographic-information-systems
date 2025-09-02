@@ -88,7 +88,8 @@ class InfrastructureCategoryResource extends Resource
                 Tables\Actions\EditAction::make()
                     ->label('Ubah'),
                 Tables\Actions\DeleteAction::make()
-                    ->label('Hapus'),
+                    ->label('Hapus')
+                    ->modalHeading('Hapus Kategori Infrastruktur'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
