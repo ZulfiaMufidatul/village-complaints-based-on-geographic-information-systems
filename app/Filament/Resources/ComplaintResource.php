@@ -47,7 +47,7 @@ class ComplaintResource extends Resource
 
     public static function canEdit(Model $record): bool
     {
-        return auth()->user()->can('edit-complaints');
+        return auth()->user()->can('process-complaints');
     }
 
     public static function canDelete(Model $record): bool
@@ -224,7 +224,8 @@ class ComplaintResource extends Resource
                     ->label('Proses'),
                 Tables\Actions\DeleteAction::make()
                     ->visible(fn() => Auth::user()->can('delete-complaints'))
-                    ->label('Hapus'),
+                    ->label('Hapus')
+                    ->modalHeading('Hapus Data Aduan'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
