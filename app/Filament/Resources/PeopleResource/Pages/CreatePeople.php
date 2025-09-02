@@ -28,4 +28,10 @@ class CreatePeople extends CreateRecord
                 ->url(PeopleResource::getUrl('index'))
         ];
     }
+
+    // redirect ke index
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }
