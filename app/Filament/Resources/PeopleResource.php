@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
 
@@ -68,8 +69,8 @@ class PeopleResource extends Resource
                     ->label('Kata Sandi')
                     ->placeholder('Masukkan Kata Sandi')
                     ->password()
-                    ->required(fn ($context) => $context === 'create')
-                    ->dehydrateStateUsing(fn ($state) => filled($state) ? Hash::make($state) : null)
+                    ->required(fn($context) => $context === 'create')
+                    ->dehydrateStateUsing(fn($state) => filled($state) ? Hash::make($state) : null)
                     ->validationMessages([
                         'required' => 'Kata sandi wajib diisi.',
                     ]),
@@ -78,7 +79,7 @@ class PeopleResource extends Resource
                     ->placeholder('Masukkan Konfirmasi Kata Sandi')
                     ->password()
                     ->dehydrated(false)
-                    ->required(fn ($context) => $context === 'create')
+                    ->required(fn($context) => $context === 'create')
                     ->same('password')
                     ->validationMessages([
                         'same' => 'Konfirmasi kata sandi harus sama dengan kata sandi.',
@@ -152,11 +153,31 @@ class PeopleResource extends Resource
     }
 
     public static function getEloquentQuery(): Builder
-{
-    return parent::getEloquentQuery()
-        ->whereHas('roles', function ($query) {
-            $query->where('name', 'public');
-        });
-}
+    {
+        return parent::getEloquentQuery()
+            ->whereHas('roles', function ($query) {
+                $query->where('name', 'public');
+            });
+    }
 
+    // Akses: superadmin full, admin hanya view
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view-people');
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create-people');
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return auth()->user()->can('edit-people');
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return auth()->user()->can('delete-people');
+    }
 }
