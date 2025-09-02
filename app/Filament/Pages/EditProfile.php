@@ -54,7 +54,8 @@ class EditProfile extends Page implements HasForms
             TextInput::make('email')
                 ->label('Email')
                 ->email()
-                ->disabled(),
+                ->disabled()
+                ->dehydrated(),
 
             TextInput::make('password')
                 ->label('Password Baru')
