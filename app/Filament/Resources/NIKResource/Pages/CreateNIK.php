@@ -21,4 +21,10 @@ class CreateNIK extends CreateRecord
                 ->url(NIKResource::getUrl('index'))
         ];
     }
+
+    // redirect ke index
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }
