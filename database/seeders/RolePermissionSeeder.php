@@ -67,6 +67,18 @@ class RolePermissionSeeder extends Seeder
             'view-complaints',
             'process-complaints',
             'delete-complaints',
+
+            // masyarakat
+            'view-people',
+            'create-people',
+            'edit-people',
+            'delete-people',
+
+            // nik
+            'view-nik',
+            'create-nik',
+            'edit-nik',
+            'delete-nik',
         ];
 
         // Permission untuk admin
@@ -89,6 +101,18 @@ class RolePermissionSeeder extends Seeder
             // aduan
             'view-complaints',
             'process-complaints',
+
+            // masyarakat
+            'view-people',
+            'create-people',
+            'edit-people',
+            'delete-people',
+
+            // nik
+            'view-nik',
+            'create-nik',
+            'edit-nik',
+            'delete-nik',
         ];
 
         // permission ke role:superadmin

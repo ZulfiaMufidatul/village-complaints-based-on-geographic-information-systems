@@ -62,6 +62,18 @@ class PermissionSeeder extends Seeder
             'process-complaints',
             'delete-complaints',
 
+            // kelola masyarakat
+            'view-people',
+            'create-people',
+            'edit-people',
+            'delete-people',
+
+            // kelola data nik
+            'view-nik',
+            'create-nik',
+            'edit-nik',
+            'delete-nik',
+
         ];
 
         foreach ($permissions as $permission) {
