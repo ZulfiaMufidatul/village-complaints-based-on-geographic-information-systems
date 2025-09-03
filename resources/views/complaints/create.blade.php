@@ -12,6 +12,16 @@
 
 @section('content')
     <div class="max-w-4xl mx-auto px-4 py-8">
+
+        <!-- Breadcrumb -->
+        <nav class="mb-2">
+            <ol class="flex items-center space-x-2 text-sm">
+                <li><a href="{{ route('index') }}" class="text-blue-600 hover:text-blue-800 transition-colors">Beranda</a></li>
+                <li class="text-gray-500">/</li>
+                <li class="text-gray-700 font-medium">Tambah Aduan</li>
+            </ol>
+        </nav>
+
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold text-center">Form Aduan Masyarakat</h1>
             <a href="{{ route('index') }}" class="px-4 py-2 rounded-md transition-all duration-300 hover:bg-white hover:text-blue-600 font-semibold flex items-center gap-2">
@@ -130,8 +140,8 @@
                             <i class="fas fa-images"></i>
                             Pilih Dari Perangkat
                         </label>
-                        {{-- <input type="file" id="galleryInput" name="photo" accept="image/*" class="hidden"
-                            onchange="previewImage(this)"> --}}
+                        <input type="file" id="galleryInput" name="photo" accept="image/*" class="hidden"
+                            onchange="previewImage(this)">
                     </div>
 
                     <!-- Preview -->
@@ -268,7 +278,7 @@
                 }).addTo(map);
                 map.fitBounds(polygonLayer.getBounds());
 
-                // Setelah polygon dimuat, coba GPS
+                // Setelah polygon dimuat, coba GPS otomatis
                 // tryUseGeolocation();
             });
 
