@@ -15,7 +15,14 @@ class HamletComplaintChart extends ChartWidget
             ->selectRaw('COUNT(*) as total')
             ->groupBy('hamlet')
             ->pluck('total', 'hamlet');
-
+            
+        if ($data->isEmpty()) {
+            return [
+                'datasets' => [],
+                'labels' => [],
+            ];
+        }
+        
         $colors = [
             '#f87171', // merah
             '#34d399', // hijau
@@ -32,6 +39,7 @@ class HamletComplaintChart extends ChartWidget
         foreach (range(0, $data->count() - 1) as $i) {
             $backgroundColors[] = $colors[$i % $colorCount];
         }
+
         return [
             'datasets' => [
                 [

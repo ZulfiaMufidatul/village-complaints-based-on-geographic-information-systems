@@ -16,6 +16,13 @@ class CategoryComplaintChart extends ChartWidget
             ->groupBy('infrastructure_category')
             ->pluck('total', 'infrastructure_category');
 
+        if ($data->isEmpty()) {
+            return [
+                'datasets' => [],
+                'labels' => [],
+            ];
+        }
+        
         $colors = [
             '#eaaeeb', // ungu muda
             '#a5e0f2', // biru muda
