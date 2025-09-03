@@ -64,7 +64,7 @@
 
 <body class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
     <!-- Header dengan pattern -->
-    <div class="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-8">
+    <div class="relative bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white py-4 shadow-lg sticky top-0 z-50">
         <div class="absolute inset-0 bg-black opacity-10"></div>
         
         <div class="container mx-auto px-4 relative z-10">
@@ -73,7 +73,7 @@
                     <i class="fas fa-file-alt text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-3xl font-bold">Detail Aduan</h1>
+                    <h1 class="text-2xl font-bold">Detail Aduan</h1>
                     <p class="text-blue-100 mt-1">Informasi lengkap pengaduan masyarakat</p>
                 </div>
             </div>
