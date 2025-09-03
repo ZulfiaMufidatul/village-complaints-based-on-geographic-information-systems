@@ -2,8 +2,8 @@
     <div class="mx-auto px-14">
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="h-12 bg-white/70 rounded-lg flex items-center justify-center">
-                    <img src="{{ asset('images/brand-logo.svg') }}" alt="MAPIN Bulakan" class="h-full">
+                <div class="h-12 rounded-lg flex items-center justify-center">
+                    <img src="{{ asset('images/brand-logo-white.svg') }}" alt="MAPIN Bulakan" class="h-full">
                 </div>
                 {{-- <div>
                     <h1 class="text-xl font-bold">MAPIN Bulakan</h1>
