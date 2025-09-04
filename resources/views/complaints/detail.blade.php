@@ -253,8 +253,8 @@
 
                             <div class="border-l-4 border-red-500 pl-4">
                                 <p class="text-sm text-gray-600 mb-1">Lokasi</p>
-                                <p class="font-semibold text-gray-800">Dusun {{ $complaint->hamlet }}, RW
-                                    {{ $complaint->rw }}, RT {{ $complaint->rt }}</p>
+                                <p class="font-semibold text-gray-800">Dusun {{ $complaint->hamlet }},
+                                    {{ $complaint->rw }}, {{ $complaint->rt }}</p>
                             </div>
 
                             <div class="border-l-4 border-indigo-500 pl-4">
