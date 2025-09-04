@@ -33,8 +33,14 @@ class HamletResource extends Resource
                     ->label('Nama Dusun')
                     ->placeholder('Masukkan Nama Dusun')
                     ->required()
+                    ->unique(
+                        table: 'hamlets',
+                        column: 'name',
+                        ignoreRecord: true
+                    )
                     ->maxLength(255)
                     ->validationMessages([
+                        'unique' => 'Nama dusun sudah ada.',
                         'required' => 'Nama dusun wajib diisi.',
                     ]),
             ]);

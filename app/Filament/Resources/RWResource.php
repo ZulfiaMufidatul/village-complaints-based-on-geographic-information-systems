@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class RWResource extends Resource
 {
@@ -61,7 +62,15 @@ class RWResource extends Resource
                     ->required()
                     ->placeholder('Masukkan Nama RW')
                     ->label('Nama RW')
+                    ->rules([
+                        function (callable $get) {
+                            return Rule::unique('rws', 'name')
+                                ->where('hamlet_id', $get('hamlet_id'))
+                                ->ignore(request()->route('record')); // agar saat edit data lama tetap bisa
+                        },
+                    ])
                     ->validationMessages([
+                        'unique' => 'RW ini sudah ada di Dusun yang terpilih.',
                         'required' => 'Nama RW wajib diisi.',
                     ]),
 

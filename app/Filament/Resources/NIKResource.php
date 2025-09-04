@@ -33,7 +33,13 @@ class NIKResource extends Resource
                     ->label('NIK')
                     ->placeholder('Masukkan NIK')
                     ->required()
+                    ->unique(
+                        table: 'nik',
+                        column: 'value',
+                        ignoreRecord: true
+                    )
                     ->validationMessages([
+                        'unique' => 'NIK ini sudah terdaftar.',
                         'required' => 'NIK wajib diisi.',
                     ]),
             ]);
@@ -55,25 +61,25 @@ class NIKResource extends Resource
                             : 'Tidak Aktif';
                     })
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'Aktif' => 'success',
                         'Tidak Aktif' => 'warning',
                     }),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                ->label('Status')
-                ->options([
-                    'aktif' => 'Aktif',
-                    'tidak_aktif' => 'Tidak Aktif',
-                ])
-                ->query(function ($query, array $data) {
-                    if (($data['value'] ?? null) === 'aktif') {
-                        $query->whereHas('user');
-                    } elseif (($data['value'] ?? null) === 'tidak_aktif') {
-                        $query->whereDoesntHave('user');
-                    }
-                }),
+                    ->label('Status')
+                    ->options([
+                        'aktif' => 'Aktif',
+                        'tidak_aktif' => 'Tidak Aktif',
+                    ])
+                    ->query(function ($query, array $data) {
+                        if (($data['value'] ?? null) === 'aktif') {
+                            $query->whereHas('user');
+                        } elseif (($data['value'] ?? null) === 'tidak_aktif') {
+                            $query->whereDoesntHave('user');
+                        }
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

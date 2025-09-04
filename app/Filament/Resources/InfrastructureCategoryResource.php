@@ -56,7 +56,13 @@ class InfrastructureCategoryResource extends Resource
                 TextInput::make('name')
                     ->label('Nama Kategori')
                     ->required()
+                    ->unique(
+                        table: 'infrastructure_categories',
+                        column: 'name',
+                        ignoreRecord: true
+                    )
                     ->validationMessages([
+                        'unique' => 'Kategori infrastruktur sudah ada.',
                         'required' => 'Nama kategori wajib diisi.',
                     ]),
 

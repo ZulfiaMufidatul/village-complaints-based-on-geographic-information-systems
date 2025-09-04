@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class RTResource extends Resource
 {
@@ -80,7 +81,15 @@ class RTResource extends Resource
                     ->label('RT')
                     ->placeholder('Masukkan RT')
                     ->required()
+                    ->rules([
+                        function (callable $get) {
+                            return Rule::unique('rts', 'name')
+                                ->where('rw_id', $get('rw_id'))
+                                ->ignore(request()->route('record'));
+                        },
+                    ])
                     ->validationMessages([
+                        'unique' => 'RT ini sudah ada di RW terpilih.',
                         'required' => 'RT wajib diisi.',
                     ]),
             ]);
