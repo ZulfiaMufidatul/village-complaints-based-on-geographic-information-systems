@@ -16,7 +16,8 @@
         <!-- Breadcrumb -->
         <nav class="mb-2">
             <ol class="flex items-center space-x-2 text-sm">
-                <li><a href="{{ route('index') }}" class="text-blue-600 hover:text-blue-800 transition-colors">Beranda</a></li>
+                <li><a href="{{ route('index') }}" class="text-blue-600 hover:text-blue-800 transition-colors">Beranda</a>
+                </li>
                 <li class="text-gray-500">/</li>
                 <li class="text-gray-700 font-medium">Tambah Aduan</li>
             </ol>
@@ -24,7 +25,8 @@
 
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold text-center">Form Aduan Masyarakat</h1>
-            <a href="{{ route('index') }}" class="px-4 py-2 rounded-md transition-all duration-300 hover:bg-white hover:text-blue-600 font-semibold flex items-center gap-2">
+            <a href="{{ route('index') }}"
+                class="px-4 py-2 rounded-md transition-all duration-300 hover:bg-white hover:text-blue-600 font-semibold flex items-center gap-2">
                 <i class="fa-solid fa-arrow-left"></i>
                 Kembali
             </a>
@@ -58,19 +60,21 @@
 
             <div>
                 <label class="block font-semibold">Nama Pelapor</label>
-                <input placeholder="Masukkan Nama Anda" type="text" name="name" value="{{ old('name') ? old('name') : $user->name }}" required
+                <input placeholder="Masukkan Nama Anda" type="text" name="name"
+                    value="{{ old('name') ? old('name') : $user->name }}" required
                     class="w-full mt-1 rounded border border-gray-300 p-2">
             </div>
-            
+
             <div class="grid md:grid-cols-2 gap-4">
                 <div>
                     <label class="block font-semibold">No HP</label>
-                    <input placeholder="Masukkan No HP Anda" type="text" name="phone" value="{{ old('phone') }}" required
-                        class="w-full mt-1 rounded border border-gray-300 p-2">
+                    <input placeholder="Masukkan No HP Anda" type="text" name="phone" value="{{ old('phone') }}"
+                        required class="w-full mt-1 rounded border border-gray-300 p-2">
                 </div>
                 <div>
                     <label class="block font-semibold">Email</label>
-                    <input placeholder="Masukkan Email Anda" type="email" name="email" value="{{ old('email') ? old('email') : $user->email }}" required
+                    <input placeholder="Masukkan Email Anda" type="email" name="email"
+                        value="{{ old('email') ? old('email') : $user->email }}" required
                         class="w-full mt-1 rounded border border-gray-300 p-2">
                 </div>
             </div>
@@ -79,8 +83,7 @@
             <div class="grid md:grid-cols-3 gap-4">
                 <div>
                     <label class="block font-semibold">Dusun</label>
-                    <select name="hamlet" id="hamlet" required
-                        class="w-full mt-1 rounded border border-gray-300 p-2">
+                    <select name="hamlet" id="hamlet" required class="w-full mt-1 rounded border border-gray-300 p-2">
                         <option value="">--Pilih Dusun--</option>
                         @foreach ($hamlets as $hamlet)
                             <option value="{{ $hamlet->name }}" data-id="{{ $hamlet->id }}">{{ $hamlet->name }}
@@ -91,16 +94,14 @@
 
                 <div>
                     <label class="block font-semibold">RW</label>
-                    <select name="rw" id="rw" required
-                        class="w-full mt-1 rounded border border-gray-300 p-2">
+                    <select name="rw" id="rw" required class="w-full mt-1 rounded border border-gray-300 p-2">
                         <option value="">--Pilih RW--</option>
                     </select>
                 </div>
 
                 <div>
                     <label class="block font-semibold">RT</label>
-                    <select name="rt" id="rt" required
-                        class="w-full mt-1 rounded border border-gray-300 p-2">
+                    <select name="rt" id="rt" required class="w-full mt-1 rounded border border-gray-300 p-2">
                         <option value="">--Pilih RT--</option>
                     </select>
                 </div>
@@ -118,31 +119,39 @@
 
             <div>
                 <label class="block font-semibold">Deskripsi</label>
-                <textarea placeholder="Masukkan Deskripsi Aduan Anda" name="description" required class="w-full mt-1 rounded border border-gray-300 p-2">{{ old('description') }}</textarea>
+                <textarea placeholder="Masukkan Deskripsi Aduan Anda" name="description" required
+                    class="w-full mt-1 rounded border border-gray-300 p-2">{{ old('description') }}</textarea>
+                @error('description')
+                    <small class="text-red-600">{{ $message }}</small>
+                @enderror
             </div>
 
             <div>
                 <div class="space-y-4">
-                    <!-- Tombol -->
-                    <div class="flex gap-4">
-                        <!-- Tombol Kamera -->
-                        <label for="cameraInput"
-                            class="cursor-pointer px-4 py-2 text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-400 transition">
-                            <i class="fas fa-camera"></i>
-                            Ambil Foto
-                        </label>
-                        <input type="file" id="cameraInput" name="photo" accept="image/*" capture="environment"
-                            class="hidden" onchange="previewImage(this)">
+                    <!-- Input Kamera -->
+                    <input type="file" id="cameraInput" name="photo_camera" accept="image/*" capture="environment"
+                        class="hidden" onchange="previewImage(this)">
 
-                        <!-- Tombol Galeri -->
-                        <label for="cameraInput"
-                            class="cursor-pointer px-4 py-2 text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-400 transition">
-                            <i class="fas fa-images"></i>
-                            Pilih Dari Perangkat
-                        </label>
-                        <input type="file" id="galleryInput" name="photo" accept="image/*" class="hidden"
-                            onchange="previewImage(this)">
-                    </div>
+                    <!-- Input Galeri -->
+                    <input type="file" id="galleryInput" name="photo_gallery" accept="image/*" class="hidden"
+                        onchange="previewImage(this)">
+
+                    <!-- Tombol Kamera -->
+                    <label for="cameraInput"
+                        class="cursor-pointer px-4 py-2 text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-400 transition">
+                        <i class="fas fa-camera"></i>
+                        Ambil Foto
+                    </label>
+
+                    <!-- Tombol Galeri -->
+                    <label for="galleryInput"
+                        class="cursor-pointer px-4 py-2 text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-400 transition">
+                        <i class="fas fa-image"></i>
+                        Pilih dari Galeri
+                    </label>
+
+                    <!-- Preview -->
+                    <img id="preview" class="mt-2 w-32 h-32 object-cover rounded-lg hidden">
 
                     <!-- Preview -->
                     <div id="imagePreviewContainer" class="mt-4 hidden">
@@ -357,5 +366,5 @@
                 };
             }
         }
-    </script>    
+    </script>
 @endpush

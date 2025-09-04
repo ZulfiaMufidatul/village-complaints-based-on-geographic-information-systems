@@ -71,26 +71,36 @@ class ComplaintController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string',
-            'phone' => 'required|string',
-            'email' => 'nullable|email',
-            'hamlet' => 'required|string',
-            'rw' => 'required|string',
-            'rt' => 'required|string',
-            'infrastructure_category' => 'required|string',
-            'description' => 'required|string',
-            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'longitude' => 'required|numeric',
-            'latitude' => 'required|numeric',
-        ]);
+        $validatedData = $request->validate(
+            [
+                'name' => 'required|string',
+                'phone' => 'required|string',
+                'email' => 'nullable|email',
+                'hamlet' => 'required|string',
+                'rw' => 'required|string',
+                'rt' => 'required|string',
+                'infrastructure_category' => 'required|string',
+                'description' => 'required|string|min:10',
+                'photo_camera' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+                'photo_gallery' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+                'longitude' => 'required|numeric',
+                'latitude' => 'required|numeric',
+            ],
+            [
+                'description.required' => 'Deskripsi wajib diisi.',
+                'description.min' => 'Deskripsi minimal harus 10 karakter.',
+            ]
+        );
 
         $last = Complaint::latest('id')->first();
         $number = $last ? intval(substr($last->complaints_code, -4)) + 1 : 1;
         $validatedData['complaints_code'] = 'ADUAN-' . str_pad($number, 4, '0', STR_PAD_LEFT);
 
-        if ($request->hasFile('photo')) {
-            $validatedData['photo'] = $request->file('photo')->store('complaints', 'public');
+        // Upload foto (pilih salah satu: kamera atau galeri)
+        if ($request->hasFile('photo_camera')) {
+            $validatedData['photo'] = $request->file('photo_camera')->store('complaints', 'public');
+        } elseif ($request->hasFile('photo_gallery')) {
+            $validatedData['photo'] = $request->file('photo_gallery')->store('complaints', 'public');
         } else {
             $validatedData['photo'] = '';
         }
