@@ -42,9 +42,9 @@
             // Peta warna per kategori
             const categoryColors = {
                 'Jalan': 'red',
-                'Drainase': 'blue',
+                'Saluran Air': 'blue',
                 'Jembatan': 'green',
-                'Gorong-Gorong': 'yellow',
+                'Gorong-gorong': 'yellow',
             };
 
             // Tambahkan marker untuk setiap aduan
