@@ -15,7 +15,7 @@ use Filament\Infolists\Components\ViewEntry;
 use Filament\Infolists\Infolist;
 use Filament\Actions\Action;
 
-class ViewComplaint extends ViewRecord
+class ViewComplaints extends ViewRecord
 {
     protected static string $resource = ComplaintResource::class;
 

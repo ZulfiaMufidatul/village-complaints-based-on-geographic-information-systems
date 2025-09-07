@@ -259,7 +259,7 @@ class ComplaintResource extends Resource
     {
         return [
             'index' => Pages\ListComplaints::route('/'),
-            'view' => Pages\ViewComplaint::route('/{record}'),
+            'view' => Pages\ViewComplaints::route('/{record}'),
             'edit' => Pages\EditComplaint::route('/{record}/edit'),
         ];
     }
