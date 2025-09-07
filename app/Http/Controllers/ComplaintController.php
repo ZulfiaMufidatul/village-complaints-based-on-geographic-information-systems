@@ -81,14 +81,16 @@ class ComplaintController extends Controller
                 'rt' => 'required|string',
                 'infrastructure_category' => 'required|string',
                 'description' => 'required|string|min:10',
-                'photo_camera' => 'nullable|image|mimes:jpg,jpeg,png',
-                'photo_gallery' => 'nullable|image|mimes:jpg,jpeg,png',
+                'photo_camera' => 'nullable|mimes:jpg,jpeg,png',
+                'photo_gallery' => 'nullable|mimes:jpg,jpeg,png',
                 'longitude' => 'required|numeric',
                 'latitude' => 'required|numeric',
             ],
             [
                 'description.required' => 'Deskripsi wajib diisi.',
                 'description.min' => 'Deskripsi minimal harus 10 karakter.',
+                'photo_camera.mimes' => 'Foto kamera hanya boleh berformat JPG, JPEG, atau PNG.',
+                'photo_gallery.mimes' => 'Foto galeri hanya boleh berformat JPG, JPEG, atau PNG.',
             ]
         );
 

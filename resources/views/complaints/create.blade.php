@@ -132,10 +132,18 @@
                     <input type="file" id="cameraInput" name="photo_camera" accept="image/*" capture="environment"
                         class="hidden" onchange="previewImage(this)">
 
+                    @if ($errors->has('photo_camera'))
+                        <p class="text-red-600 text-sm mt-1">{{ $errors->first('photo_camera') }}</p>
+                    @endif
+
                     <!-- Input Galeri -->
                     <input type="file" id="galleryInput" name="photo_gallery" accept="image/*" class="hidden"
                         onchange="previewImage(this)">
 
+                    @if ($errors->has('photo_gallery'))
+                        <p class="text-red-600 text-sm mt-1">{{ $errors->first('photo_gallery') }}</p>
+                    @endif
+                    
                     <!-- Tombol Kamera & Galeri (Responsive) -->
                     <div class="flex flex-col sm:flex-row gap-3">
                         <!-- Tombol Kamera -->
