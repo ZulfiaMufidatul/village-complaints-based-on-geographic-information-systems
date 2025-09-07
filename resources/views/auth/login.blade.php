@@ -6,7 +6,12 @@
 
 @section('content')
     <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-        <h2 class="text-2xl font-bold text-center mb-6">Masuk</h2>
+         {{-- <!-- Logo -->
+        <div class="flex justify-center mb-0">
+            <img src="{{ asset('images/brand-logo.svg') }}" alt="Logo" class="h-40 w-40 object-contain">
+        </div> --}}
+
+        <h2 class="text-2xl font-bold text-center mt-0 mb-3">Masuk</h2>
         <form action="{{ route('login.post') }}" method="post" class="space-y-4">
             @csrf
             <div>
