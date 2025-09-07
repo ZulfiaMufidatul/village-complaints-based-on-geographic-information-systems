@@ -39,6 +39,8 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Configure the rate limiters for the application.
      */
+
+    // limiter aduan
     protected function configureRateLimiting(): void
     {
         RateLimiter::for('api', function (Request $request) {
