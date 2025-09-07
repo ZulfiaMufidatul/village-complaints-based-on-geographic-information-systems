@@ -82,7 +82,7 @@
 
             <div class="grid md:grid-cols-3 gap-4">
                 <div>
-                    <label class="block font-semibold">Dusun</label>
+                    <label class="block font-semibold">Dusun yang dilaporkan</label>
                     <select name="hamlet" id="hamlet" required class="w-full mt-1 rounded border border-gray-300 p-2">
                         <option value="">--Pilih Dusun--</option>
                         @foreach ($hamlets as $hamlet)
@@ -127,7 +127,7 @@
             </div>
 
             <div>
-                <div class="space-y-4">
+                <div class="space-y-2">
                     <!-- Input Kamera -->
                     <input type="file" id="cameraInput" name="photo_camera" accept="image/*" capture="environment"
                         class="hidden" onchange="previewImage(this)">
@@ -136,22 +136,22 @@
                     <input type="file" id="galleryInput" name="photo_gallery" accept="image/*" class="hidden"
                         onchange="previewImage(this)">
 
-                    <!-- Tombol Kamera -->
-                    <label for="cameraInput"
-                        class="cursor-pointer px-4 py-2 text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-400 transition">
-                        <i class="fas fa-camera"></i>
-                        Ambil Foto
-                    </label>
+                    <!-- Tombol Kamera & Galeri (Responsive) -->
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <!-- Tombol Kamera -->
+                        <label for="cameraInput"
+                            class="flex items-center justify-center w-full sm:w-auto px-4 py-3 text-gray-800 border border-gray-300 rounded-lg bg-white shadow hover:bg-gray-100 active:scale-95 transition">
+                            <i class="fas fa-camera mr-2"></i>
+                            Ambil Foto
+                        </label>
 
-                    <!-- Tombol Galeri -->
-                    <label for="galleryInput"
-                        class="cursor-pointer px-4 py-2 text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-400 transition">
-                        <i class="fas fa-image"></i>
-                        Pilih dari Galeri
-                    </label>
-
-                    <!-- Preview -->
-                    <img id="preview" class="mt-2 w-32 h-32 object-cover rounded-lg hidden">
+                        <!-- Tombol Galeri -->
+                        <label for="galleryInput"
+                            class="flex items-center justify-center w-full sm:w-auto px-4 py-3 text-gray-800 border border-gray-300 rounded-lg bg-white shadow hover:bg-gray-100 active:scale-95 transition">
+                            <i class="fas fa-image mr-2"></i>
+                            Pilih dari Galeri
+                        </label>
+                    </div>
 
                     <!-- Preview -->
                     <div id="imagePreviewContainer" class="mt-4 hidden">
@@ -163,10 +163,10 @@
             </div>
 
             <div>
-                <div class="w-full justify-between flex items-center mb-4 ">
+                <div class="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
                     <label class="block font-semibold mb-1">Lokasi</label>
                     <button type="button" id="useNow"
-                        class="rounded border border-gray-300 px-2 py-[1px] bg-blue-500 text-white text-sm flex items-center gap-1">
+                        class=" w-full sm:w-auto rounded border border-gray-300 px-2 py-[1px] bg-blue-500 text-white text-sm flex items-center gap-2 hover:bg-blue-600 transition">
                         <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path
