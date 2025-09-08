@@ -28,23 +28,23 @@ class ProfileController extends Controller
             'confirm_password.required' => 'Konfirmasi kata sandi baru wajib diisi.',
             'confirm_password.same' => 'Konfirmasi kata sandi baru tidak sesuai.',
         ]);
-    
+
         $user = Auth::user();
-    
+
         if (!Hash::check($request->old_password, $user->password)) {
             return back()->withErrors(['old_password' => 'Kata sandi lama tidak sesuai.'])->withInput();
         }
-    
+
         $user->password = Hash::make($request->new_password);
         try {
             $user->save();
         } catch (Exception $e) {
             return back()->with(['password' => 'Gagal memperbarui kata sandi.'])->withInput();
         }
-    
+
         return back()->with('password', 'Kata sandi berhasil diperbarui.');
     }
-    
+
     public function updateAccount(Request $request)
     {
         $request->validate([
@@ -55,7 +55,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         $user->name = $request->name;
         $user->email = $request->email;
-        
+
         try {
             $user->save();
         } catch (Exception $e) {
