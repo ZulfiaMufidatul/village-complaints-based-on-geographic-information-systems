@@ -14,10 +14,10 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            font-size: 12px;
-            line-height: 1.4;
+            font-size: 10px;
+            line-height: 1.3;
             color: #333;
-            margin: 13px;
+            margin: 10px;
         }
 
         .kop-image {
@@ -31,22 +31,22 @@
         .header {
             display: flex;
             align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
             border-bottom: 3px solid #000000;
         }
 
         .report-title {
             text-align: center;
-            margin: 25px 0;
-            padding: 15px 0;
+            margin: 20px 0;
+            padding: 12px 0;
             background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            border-radius: 8px;
+            border-radius: 6px;
             border: 1px solid #90caf9;
         }
 
         .report-title h2 {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             color: #1565c0;
             text-transform: uppercase;
@@ -56,10 +56,11 @@
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            margin-top: 15px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
             overflow: hidden;
+            table-layout: fixed;
         }
 
         .data-table thead {
@@ -70,9 +71,26 @@
             background: #42a5f5 !important;
             color: #ffffff !important;
             -webkit-print-color-adjust: exact;
-            font-size: 10px;
-            padding: 6px 4px;
+            font-size: 7px;
+            padding: 6px 3px;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
         }
+
+        /* Lebar kolom yang disesuaikan */
+        .data-table th:nth-child(1) { width: 3%; } /* No */
+        .data-table th:nth-child(2) { width: 15%; } /* Foto */
+        .data-table th:nth-child(3) { width: 8%; } /* Kode */
+        .data-table th:nth-child(4) { width: 8%; } /* Nama */
+        .data-table th:nth-child(5) { width: 10%; } /* Alamat */
+        .data-table th:nth-child(6) { width: 8%; } /* Kategori */
+        .data-table th:nth-child(7) { width: 8%; } /* Telepon */
+        .data-table th:nth-child(8) { width: 14%; } /* Email */
+        .data-table th:nth-child(9) { width: 12%; } /* Deskripsi */
+        .data-table th:nth-child(10) { width: 8%; } /* Koordinat */
+        .data-table th:nth-child(11) { width: 7%; } /* Status Permintaan */
+        .data-table th:nth-child(12) { width: 7%; } /* Status Pengaduan */
 
         .data-table tbody tr:nth-child(even) {
             background-color: #f5f9ff;
@@ -82,100 +100,92 @@
             background-color: #ffffff;
         }
 
-        .data-table tbody tr:hover {
-            background-color: #e3f2fd;
-        }
-
         .data-table tbody td {
-            padding: 8px 6px;
+            padding: 4px 2px;
             border: 1px solid #bbdefb;
-            font-size: 9px;
+            font-size: 7px;
             vertical-align: top;
             word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        .data-table img {
+            width: 90px;
+            object-fit: cover;
+            border-radius: 3px;
         }
 
         .status-active {
             background-color: #c8e6c9;
             color: #2e7d32;
-            padding: 3px 8px;
-            border-radius: 12px;
+            padding: 2px 4px;
+            border-radius: 8px;
             font-weight: bold;
             text-align: center;
-            font-size: 8px;
+            font-size: 7px;
+            display: block;
+            margin: 1px 0;
         }
 
         .status-inactive {
             background-color: #ffcdd2;
             color: #c62828;
-            padding: 3px 8px;
-            border-radius: 12px;
+            padding: 2px 4px;
+            border-radius: 8px;
             font-weight: bold;
             text-align: center;
-            font-size: 8px;
+            font-size: 7px;
+            display: block;
+            margin: 1px 0;
         }
 
         .status-pending {
             background-color: #fff3e0;
             color: #ef6c00;
-            padding: 3px 8px;
-            border-radius: 12px;
+            padding: 2px 4px;
+            border-radius: 8px;
             font-weight: bold;
             text-align: center;
-            font-size: 8px;
+            font-size: 7px;
+            display: block;
+            margin: 1px 0;
         }
 
         .footer {
-            margin-top: 30px;
+            margin-top: 25px;
             text-align: right;
             color: #666;
-            font-size: 10px;
-        }
-
-        .page-break {
-            page-break-after: always;
-        }
-
-        @media print {
-            body {
-                margin: 15px;
-            }
-
-            .data-table {
-                font-size: 8px;
-            }
-
-            .data-table thead th {
-                font-size: 9px;
-                padding: 8px 6px;
-            }
-
-            .data-table tbody td {
-                font-size: 8px;
-                padding: 6px 4px;
-            }
+            font-size: 8px;
         }
 
         .no-data {
             text-align: center;
-            padding: 40px;
+            padding: 30px;
             color: #666;
             font-style: italic;
             background-color: #f5f9ff;
-            border-radius: 8px;
+            border-radius: 6px;
             border: 1px dashed #90caf9;
         }
 
         .summary-info {
             background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 5px solid #4caf50;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4caf50;
         }
 
         .summary-info h4 {
             color: #2e7d32;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
+            font-size: 11px;
+        }
+
+        .summary-info p {
+            font-size: 9px;
+            margin-bottom: 2px;
         }
 
         .text-center {
@@ -192,6 +202,74 @@
 
         .font-bold {
             font-weight: bold;
+        }
+
+        /* Style khusus untuk koordinat */
+        .coordinate-text {
+            font-size: 7px;
+            line-height: 1.2;
+            word-break: break-all;
+        }
+
+        /* Style untuk email yang panjang */
+        .email-text {
+            font-size: 7px;
+            word-break: break-all;
+            line-height: 1.1;
+        }
+
+        /* Style untuk deskripsi */
+        .description-text {
+            font-size: 7px;
+            line-height: 1.2;
+            text-align: justify;
+        }
+
+        @media print {
+            body {
+                margin: 8px;
+                font-size: 8px;
+            }
+
+            .data-table thead th {
+                font-size: 7px;
+                padding: 4px 2px;
+            }
+
+            .data-table tbody td {
+                font-size: 6px;
+                padding: 3px 1px;
+            }
+
+            .status-active, .status-inactive, .status-pending {
+                font-size: 5px;
+                padding: 1px 2px;
+            }
+
+            .coordinate-text, .email-text {
+                font-size: 5px;
+            }
+
+            .description-text {
+                font-size: 6px;
+            }
+        }
+
+        /* Responsive untuk layar kecil */
+        @media (max-width: 768px) {
+            .data-table {
+                font-size: 6px;
+            }
+            
+            .data-table thead th {
+                font-size: 6px;
+                padding: 4px 1px;
+            }
+            
+            .data-table tbody td {
+                font-size: 5px;
+                padding: 2px 1px;
+            }
         }
     </style>
 </head>
@@ -222,34 +300,47 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Alamat</th>
-                    <th>Kategori Infrastruktur</th>
-                    <th>Kode Pengaduan</th>
+                    <th>Foto</th>
+                    <th>Kode<br>Pengaduan</th>
                     <th>Nama</th>
+                    <th>Alamat</th>
+                    <th>Kategori<br>Infrastruktur</th>
                     <th>Telepon</th>
                     <th>Email</th>
                     <th>Deskripsi</th>
-                    <th>Longitude, Latitude</th>
-                    <th>Status Permintaan</th>
-                    <th>Status Pengaduan</th>
+                    <th>Koordinat<br>(Lng, Lat)</th>
+                    <th>Status<br>Permintaan</th>
+                    <th>Status<br>Pengaduan</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($data as $index => $item)
                     <tr>
                         <td class="text-center font-bold">{{ $index + 1 }}</td>
-                        <td>
-                            {{ $item->hamlet ?? '-' }},
-                            RT{{ $item->rt ?? '-' }}/RW{{ $item->rw ?? '-' }}
+                        <td class="text-center">
+                            @if ($item->photo)
+                                <img src="{{ public_path('storage/' . $item->photo) }}" alt="Foto">
+                            @else
+                                <span style="font-size: 7px; color: #999;">Tidak ada foto</span>
+                            @endif
                         </td>
-                        <td>{{ $item->infrastructure_category ?? '-' }}</td>
                         <td class="text-center font-bold">{{ $item->complaints_code ?? '-' }}</td>
                         <td>{{ $item->name ?? '-' }}</td>
-                        <td>{{ $item->phone ?? '-' }}</td>
-                        <td style="word-break: break-all;">{{ $item->email ?? '-' }}</td>
-                        <td>{{ Str::limit($item->description ?? '-', 100) }}</td>
-
-                        <td class="text-center">{{ $item->longitude ?? '-' }}, {{ $item->latitude ?? '-' }}</td>
+                        <td style="font-size: 7px;">
+                            {{ $item->hamlet ?? '-' }}<br>
+                            RT{{ $item->rt ?? '-' }}/RW{{ $item->rw ?? '-' }}
+                        </td>
+                        <td style="font-size: 7px;">{{ $item->infrastructure_category ?? '-' }}</td>
+                        <td style="font-size: 7px;">{{ $item->phone ?? '-' }}</td>
+                        <td class="email-text">{{ $item->email ?? '-' }}</td>
+                        <td class="description-text">{{ Str::limit($item->description ?? '-', 80) }}</td>
+                        <td class="coordinate-text text-center">
+                            @if($item->longitude && $item->latitude)
+                                {{ number_format($item->longitude, 6) }},<br>{{ number_format($item->latitude, 6) }}
+                            @else
+                                -
+                            @endif
+                        </td>
                         <td class="text-center">
                             @if ($item->request_status == 'active')
                                 <span class="status-active">Aktif</span>
