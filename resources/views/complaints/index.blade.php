@@ -111,6 +111,162 @@
             </div>
         @endif
 
+        {{-- Aduan --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 mt-6">
+            @foreach ($complaints as $c)
+                <div class="bg-white border rounded-lg shadow-sm overflow-hidden hover:shadow-md transition">
+                    {{-- Foto --}}
+                    @if ($c->photo)
+                        <img src="{{ asset('storage/' . $c->photo) }}" class="w-full h-32 object-cover" alt="Foto Aduan">
+                    @else
+                        <div class="w-full h-32 bg-gray-200 flex items-center justify-center text-gray-500">
+                            Tidak ada foto
+                        </div>
+                    @endif
+
+                    <div class="p-4">
+
+                        {{-- Judul Aduan --}}
+                        <h4 class="font-bold text-md mb-2">{{ $c->infrastructure_category ?? '-' }}</h4>
+
+                        {{-- Alamat + Tanggal --}}
+                        <p class="text-xs text-blue-600 font-medium mb-2">
+                            Dusun {{ $c->hamlet }} • {{ $c->rt }}/{{ $c->rw }}
+                        </p>
+                        <p class="text-xs text-gray-500 mb-2">
+                            {{ $c->created_at->format('d M Y') }}
+                        </p>
+
+                        {{-- Status --}}
+                        @php
+                            $statusMap = [
+                                'pending' => ['Menunggu', 'bg-yellow-100 text-yellow-700'],
+                                'cancel' => ['Dibatalkan', 'bg-red-100 text-red-700'],
+                                'process' => ['Diproses', 'bg-blue-100 text-blue-700'],
+                                'done' => ['Selesai', 'bg-green-100 text-green-700'],
+                            ];
+
+                            $statusKey = strtolower($c->status_complaint);
+                            $status = $statusMap[$statusKey] ?? ['Tidak Diketahui', 'bg-gray-100 text-gray-700'];
+                        @endphp
+
+                        <span class="inline-block mt-1 px-2 py-0.5 text-[10px] font-medium rounded {{ $status[1] }}">
+                            {{ $status[0] }}
+                        </span>
+
+                        {{-- Tombol Detail
+                        <a href="{{ route('complaints.detail', $c->complaints_code) }}"
+                            class="block w-full mt-4 text-center py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                            Detail
+                        </a> --}}
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        {{-- Paginasi --}}
+        {{-- Custom Pagination --}}
+        @if ($complaints->hasPages())
+            <div class="flex items-center justify-between bg-white px-4 py-3 border border-gray-200 rounded-lg shadow-sm">
+                {{-- Info Results --}}
+                <div class="flex-1 flex justify-between sm:hidden">
+                    @if ($complaints->onFirstPage())
+                        <span
+                            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 border border-gray-300 cursor-default leading-5 rounded-md">
+                            « Previous
+                        </span>
+                    @else
+                        <a href="{{ $complaints->previousPageUrl() }}"
+                            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:outline-none focus:ring ring-blue-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+                            « Previous
+                        </a>
+                    @endif
+
+                    @if ($complaints->hasMorePages())
+                        <a href="{{ $complaints->nextPageUrl() }}"
+                            class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:outline-none focus:ring ring-blue-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+                            Next »
+                        </a>
+                    @else
+                        <span
+                            class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-500 bg-gray-100 border border-gray-300 cursor-default leading-5 rounded-md">
+                            Next »
+                        </span>
+                    @endif
+                </div>
+
+                <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                    {{-- Results Info --}}
+                    <div>
+                        <p class="text-sm text-gray-600 leading-5">
+                            Menampilkan
+                            <span class="font-semibold text-gray-800">{{ $complaints->firstItem() }}</span>
+                            sampai
+                            <span class="font-semibold text-gray-800">{{ $complaints->lastItem() }}</span>
+                            dari
+                            <span class="font-semibold text-gray-800">{{ $complaints->total() }}</span>
+                            Data Aduan
+                        </p>
+                    </div>
+
+                    {{-- Pagination Links --}}
+                    <div class="flex items-center space-x-1">
+                        {{-- Previous Button --}}
+                        @if ($complaints->onFirstPage())
+                            <span
+                                class="inline-flex items-center justify-center w-8 h-8 text-gray-400 bg-gray-100 rounded-full cursor-not-allowed">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </span>
+                        @else
+                            <a href="{{ $complaints->previousPageUrl() }}"
+                                class="inline-flex items-center justify-center w-8 h-8 text-gray-600 bg-white border border-gray-300 rounded-full hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 transition-all duration-200">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </a>
+                        @endif
+
+                        {{-- Page Numbers --}}
+                        @foreach ($complaints->getUrlRange(1, $complaints->lastPage()) as $page => $url)
+                            @if ($page == $complaints->currentPage())
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 text-sm font-semibold text-white bg-blue-600 rounded-full shadow-sm">
+                                    {{ $page }}
+                                </span>
+                            @else
+                                <a href="{{ $url }}"
+                                    class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-full hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 transition-all duration-200">
+                                    {{ $page }}
+                                </a>
+                            @endif
+                        @endforeach
+
+                        {{-- Next Button --}}
+                        @if ($complaints->hasMorePages())
+                            <a href="{{ $complaints->nextPageUrl() }}"
+                                class="inline-flex items-center justify-center w-8 h-8 text-gray-600 bg-white border border-gray-300 rounded-full hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 transition-all duration-200">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7" />
+                                </svg>
+                            </a>
+                        @else
+                            <span
+                                class="inline-flex items-center justify-center w-8 h-8 text-gray-400 bg-gray-100 rounded-full cursor-not-allowed">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7" />
+                                </svg>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        @endif
 
         <!-- GRAFIK -->
         <div data-aos="fade-up" class="bg-white p-6 rounded-lg shadow-md mt-6 card-hover">

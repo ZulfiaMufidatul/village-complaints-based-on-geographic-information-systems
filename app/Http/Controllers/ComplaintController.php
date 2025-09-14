@@ -38,11 +38,14 @@ class ComplaintController extends Controller
         $finishedPercentage = $total > 0 ? round(($finished / $total) * 100, 1) : 0;
         $pendingPercentage = $total > 0 ? round(($pending / $total) * 100, 1) : 0;
 
+        $complaints = Complaint::latest()->paginate(10);
+
         $user = Auth::user();
         return view('complaints.index', compact(
             'processedPercentage',
             'finishedPercentage',
             'pendingPercentage',
+            'complaints', 
             'user'
         ));
     }
@@ -156,12 +159,16 @@ class ComplaintController extends Controller
         $finishedPercentage = $total > 0 ? round(($finished / $total) * 100, 1) : 0;
         $pendingPercentage = $total > 0 ? round(($pending / $total) * 100, 1) : 0;
 
+        $complaints = Complaint::latest()->paginate(10);
+
         return view('complaints.index', compact(
             'complaint',
             'searchedCode',
             'processedPercentage',
             'finishedPercentage',
-            'pendingPercentage'
+            'pendingPercentage',
+            'complaints'
+
         ));
     }
 
