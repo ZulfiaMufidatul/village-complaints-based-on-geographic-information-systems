@@ -104,11 +104,25 @@ class ComplaintResource extends Resource
                             'cancel' => 'Dibatalkan',
                         ];
                     })
+                    ->default(fn(callable $get) => $get('request_status') === 'rejected' ? 'cancel' : null)
                     ->disabled(fn(callable $get) => $get('request_status') === 'rejected')
                     ->required()
                     ->reactive()
                     ->validationMessages([
                         'required' => 'Status aduan wajib diisi.',
+                    ]),
+
+                Textarea::make('process_comment')
+                    ->label('Detail Proses Aduan')
+                    ->placeholder('Tuliskan alasan pembatalan / detail proses aduan ini.')
+                    ->hidden(fn(callable $get) => !in_array($get('status_complaint'), ['process', 'cancel']))
+                    ->required(fn(callable $get) => in_array($get('status_complaint'), ['process', 'cancel']))
+                    ->helperText(fn(callable $get) => $get('status_complaint') === 'cancel'
+                        ? 'Tuliskan alasan pembatalan aduan ini.'
+                        : 'Tuliskan detail proses penanganan aduan.')
+                    ->columnSpanFull()
+                    ->validationMessages([
+                        'required' => 'Detail proses wajib diisi ketika aduan diproses.',
                     ]),
 
                 Textarea::make('response')

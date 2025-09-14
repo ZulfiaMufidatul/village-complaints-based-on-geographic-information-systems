@@ -64,9 +64,10 @@
 
 <body class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
     <!-- Header dengan pattern -->
-    <div class="relative bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white py-4 shadow-lg sticky top-0 z-50">
+    <div
+        class="relative bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white py-4 shadow-lg sticky top-0 z-50">
         <div class="absolute inset-0 bg-black opacity-10"></div>
-        
+
         <div class="container mx-auto px-4 relative z-10">
             <div class="flex items-center space-x-4">
                 <div class="bg-white bg-opacity-20 p-3 rounded-full">
@@ -81,12 +82,14 @@
     </div>
 
     <div class="container mx-auto px-4 py-8">
-         <!-- Breadcrumb -->
+        <!-- Breadcrumb -->
         <nav class="mb-8">
             <ol class="flex items-center space-x-2 text-sm">
-                <li><a href="{{ route('index') }}" class="text-blue-600 hover:text-blue-800 transition-colors">Beranda</a></li>
+                <li><a href="{{ route('index') }}"
+                        class="text-blue-600 hover:text-blue-800 transition-colors">Beranda</a></li>
                 <li class="text-gray-500">/</li>
-                <li><a href="{{ route('complaints.track', $complaint->complaints_code) }}" class="text-blue-600 hover:text-blue-800 transition-colors">Aduan</a></li>
+                <li><a href="{{ route('complaints.track', $complaint->complaints_code) }}"
+                        class="text-blue-600 hover:text-blue-800 transition-colors">Aduan</a></li>
                 <li class="text-gray-500">/</li>
                 <li class="text-gray-700 font-medium">Detail</li>
             </ol>
@@ -336,6 +339,7 @@
                     </div>
 
                     <!-- Step 3 - Status Aduan -->
+                    <!-- Step 3 - Status Aduan -->
                     @if ($complaint->request_status == 'approved')
                         <div class="relative flex items-center">
                             @if ($complaint->status_complaint == 'done')
@@ -346,7 +350,8 @@
                                 <div class="ml-4">
                                     <p class="font-semibold text-gray-800">Aduan Selesai</p>
                                     <p class="text-sm text-gray-600">
-                                        {{ \Carbon\Carbon::parse($complaint->updated_at)->format('d M Y H:i') }}</p>
+                                        {{ \Carbon\Carbon::parse($complaint->updated_at)->format('d M Y H:i') }}
+                                    </p>
                                 </div>
                             @elseif($complaint->status_complaint == 'process')
                                 <div
@@ -355,7 +360,7 @@
                                 </div>
                                 <div class="ml-4">
                                     <p class="font-semibold text-gray-800">Sedang Diproses</p>
-                                    <p class="text-sm text-gray-600">Perbaikan sedang berlangsung...</p>
+                                    <p class="text-sm text-gray-600">{{ $complaint->process_comment ?? '...' }}</p>
                                 </div>
                             @elseif($complaint->status_complaint == 'cancel')
                                 <div
@@ -365,7 +370,8 @@
                                 <div class="ml-4">
                                     <p class="font-semibold text-gray-800">Aduan Dibatalkan</p>
                                     <p class="text-sm text-gray-600">
-                                        {{ \Carbon\Carbon::parse($complaint->updated_at)->format('d M Y H:i') }}</p>
+                                        {{ \Carbon\Carbon::parse($complaint->updated_at)->format('d M Y H:i') }}
+                                    </p>
                                 </div>
                             @else
                                 <div
@@ -378,7 +384,26 @@
                                 </div>
                             @endif
                         </div>
+                    @elseif($complaint->request_status == 'rejected')
+                        <div class="relative flex items-center">
+                            <div
+                                class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-lg z-10">
+                                <i class="fas fa-ban"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="font-semibold text-gray-800">Aduan Dibatalkan</p>
+                                <p class="text-sm text-gray-600">
+                                    {{ \Carbon\Carbon::parse($complaint->updated_at)->format('d M Y H:i') }}
+                                </p>
+                                @if ($complaint->process_comment)
+                                    <p class="mt-1 text-sm italic text-red-600">
+                                        Alasan: {{ $complaint->process_comment }}
+                                    </p>
+                                @endif
+                            </div>
+                        </div>
                     @endif
+
                 </div>
             </div>
         </div>

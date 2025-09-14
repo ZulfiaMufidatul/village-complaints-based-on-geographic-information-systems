@@ -17,6 +17,7 @@ class EditComplaint extends EditRecord
 
     protected ?string $oldRequestStatus = null;
     protected ?string $oldStatusComplaint = null;
+    protected ?string $oldProcessComment = null;
 
     public function getTitle(): string
     {
@@ -65,6 +66,16 @@ class EditComplaint extends EditRecord
         // Simpan status lama sebelum disimpan
         $this->oldRequestStatus = $this->record->getOriginal('request_status');
         $this->oldStatusComplaint = $this->record->getOriginal('status_complaint');
+        $this->oldProcessComment = $this->record->getOriginal('process_comment');
+
+         // Validasi: wajib isi detail jika status = process atau cancel
+        if (
+            in_array($this->data['status_complaint'], ['process', 'cancel']) &&
+            empty($this->data['process_comment'])
+        ) {
+            throw \Filament\Support\Exceptions\Halt::make()
+                ->withMessage('Harap isi detail proses aduan sebelum menyimpan.');
+        }
     }
 
     protected function afterSave(): void
@@ -74,11 +85,13 @@ class EditComplaint extends EditRecord
         // ambil status baru
         $newRequestStatus = $complaint->request_status;
         $newStatusComplaint = $complaint->status_complaint;
+        $newProcessComment = $complaint->process_comment;
 
         // cek apakah status berubah
         $statusChanged = (
             $this->oldRequestStatus !== $newRequestStatus ||
-            $this->oldStatusComplaint !== $newStatusComplaint
+            $this->oldStatusComplaint !== $newStatusComplaint ||
+            $this->oldProcessComment !== $newProcessComment
         );
 
         // Mapping untuk status

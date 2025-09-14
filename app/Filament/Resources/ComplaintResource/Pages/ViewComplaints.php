@@ -272,6 +272,16 @@ class ViewComplaints extends ViewRecord
                     ->icon('heroicon-o-inbox')
                     ->iconColor('success')
                     ->schema([
+                        TextEntry::make('process_comment')
+                            ->label('Detail Proses Aduan')
+                            ->icon('heroicon-o-clipboard-document-check')
+                            ->iconColor('info')
+                            ->prose()
+                            ->markdown()
+                            ->placeholder('Belum ada detail proses dari admin')
+                            ->extraAttributes([
+                                'class' => 'bg-green-50 p-4 rounded-lg border border-green-200 text-green-800 leading-relaxed'
+                            ]),
                         TextEntry::make('response')
                             ->label('Komentar/Respon Admin')
                             ->icon('heroicon-o-chat-bubble-left')
@@ -281,11 +291,11 @@ class ViewComplaints extends ViewRecord
                             ->placeholder('Belum ada tanggapan dari admin')
                             ->extraAttributes([
                                 'class' => 'bg-blue-50 p-4 rounded-lg border border-blue-200 text-blue-800 leading-relaxed'
-                            ])
+                            ]),
                     ])
                     ->collapsible()
                     ->persistCollapsed()
-                    ->hidden(fn($record) => !$record->response),
+                    ->hidden(fn($record) => !$record->response && !$record->process_comment),
             ]);
     }
 }

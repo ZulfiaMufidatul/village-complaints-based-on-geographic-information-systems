@@ -23,6 +23,7 @@ class Complaint extends Model
         'longitude',
         'latitude',
         'date_time',
+        'process_comment',
         'response',
         'request_status',
         'status_complaint',
